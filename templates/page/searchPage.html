@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit product</title>
+</head>
+<body>
+<h1>Enter ID of product you would like to change: </h1><br>
+<form action="/product/search" method="POST">
+    Product ID: <input type="text" name="productId"/> <br/><br>
+    <input type="submit" value="Edit Product"/>
+</form>
+<br/><br>
+<#if errorMessage??>
+<head>
+    <meta charset="UTF-8">
+    <title>${errorMessage}!</title>
+</head>
+<body>
+<h2> ${errorMessage}!</h2>
+</body>
+</#if>
+</body>
+</html>

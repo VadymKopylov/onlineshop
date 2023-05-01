@@ -26,21 +26,20 @@ public class UserLoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try{
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        try {
             String userToken = userService.login(WebUtil.getUser(request));
-            if(userToken != null){
-                Cookie cookie = new Cookie("user-token",userToken);
+            if (userToken != null) {
+                Cookie cookie = new Cookie("user-token", userToken);
                 cookie.setPath("/");
                 response.addCookie(cookie);
                 response.sendRedirect("/index.html");
-            }else{
+            } else {
                 Map<String, Object> parameters = Map.of("errorMessage", "Wrong password!");
                 response.getWriter().println(PageGenerator.instance().getPage("login.html", parameters));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("/user/login");
         }
     }
 }

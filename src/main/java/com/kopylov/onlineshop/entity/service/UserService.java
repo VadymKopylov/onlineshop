@@ -16,9 +16,7 @@ public class UserService {
     public boolean isExist(User user) {
         if (!user.getEmail().isEmpty() || user.getEmail() != null) {
             if (!user.getPassword().isEmpty() || user.getPassword() != null) {
-                if (userDao.isExist(user.getEmail())) {
-                    return true;
-                }
+                return userDao.isExist(user.getEmail());
             }
         }
         return false;
@@ -26,14 +24,10 @@ public class UserService {
 
     public String login(User user) {
         if (!isExist(user)) {
-            if (!user.getEmail().isEmpty() || user.getEmail() != null) {
-                if (!user.getPassword().isEmpty() || user.getPassword() != null) {
-                    userDao.addToDataBase(securityService.fillUser(user));
-                    return securityService.assignToken();
-                }
-            }
+            userDao.addToDataBase(securityService.fillUser(user));
+            return securityService.assignToken();
         } else {
-            if(securityService.isPasswordMatch(userDao.findUserByEmail(user.getEmail()),user.getPassword())){
+            if (securityService.isPasswordMatch(userDao.findUserByEmail(user.getEmail()), user.getPassword())) {
                 return securityService.assignToken();
             }
         }

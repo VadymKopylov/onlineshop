@@ -32,10 +32,7 @@ public class SecurityService {
 
     public boolean isPasswordMatch(User user, String password) {
         String hashedPassword = DigestUtils.md5Hex(password + user.getSalt());
-        if (Objects.equals(hashedPassword, user.getPassword())) {
-            return true;
-        }
-        return false;
+        return Objects.equals(hashedPassword, user.getPassword());
     }
 
     public String assignToken() {

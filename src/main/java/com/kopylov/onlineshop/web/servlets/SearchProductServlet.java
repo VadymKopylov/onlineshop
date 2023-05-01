@@ -27,7 +27,7 @@ public class SearchProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (securityService.isAuth(WebUtil.getToken(request))) {
             try {
-                int productsCount = 0;
+                int productsCount;
                 productsCount = productService.countProduct();
                 if (productsCount == 0) {
                     response.getWriter().println(PageGenerator.instance().getPage("emptyDataBasePage.html"));

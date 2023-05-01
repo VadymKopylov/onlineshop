@@ -9,5 +9,4 @@ public interface UserDao {
     User findUserByEmail(String user);
 
     boolean isExist(String email);
-
 }

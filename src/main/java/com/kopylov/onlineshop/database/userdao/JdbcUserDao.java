@@ -24,7 +24,7 @@ public class JdbcUserDao implements UserDao {
     @Override
     public void addToDataBase(User user) {
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(INSERT_SAVE_USER_SQL);) {
+             PreparedStatement statement = connection.prepareStatement(INSERT_SAVE_USER_SQL)) {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getSalt());
@@ -38,7 +38,7 @@ public class JdbcUserDao implements UserDao {
     @Override
     public User findUserByEmail(String email) {
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_USER_SQL);) {
+             PreparedStatement statement = connection.prepareStatement(SELECT_USER_SQL)) {
             statement.setString(1, email);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -56,7 +56,7 @@ public class JdbcUserDao implements UserDao {
     public boolean isExist(String email) {
         boolean userExists = false;
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_USER_EXIST_SQL);) {
+             PreparedStatement statement = connection.prepareStatement(SELECT_USER_EXIST_SQL)) {
             statement.setString(1, email);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {

@@ -15,7 +15,7 @@ class WebUtilTest {
     private final HttpServletRequest mockRequest = mock(HttpServletRequest.class);
 
     @Test
-    void getProduct() {
+    void testGetProductReturnCorrectParametersFromRequest() {
         when(mockRequest.getParameter("productName")).thenReturn("Car");
         when(mockRequest.getParameter("price")).thenReturn(String.valueOf(1500.00));
 
@@ -26,7 +26,7 @@ class WebUtilTest {
     }
 
     @Test
-    void getProductById() {
+    void testGetProductByIdReturnCorrectParametersFromRequest() {
         int id = 1;
         when(mockRequest.getParameter("productName")).thenReturn("Car");
         when(mockRequest.getParameter("price")).thenReturn(String.valueOf(3500.00));
@@ -39,7 +39,7 @@ class WebUtilTest {
     }
 
     @Test
-    void testGetUser() {
+    void testGetUserReturnCorrectParametersFromRequest() {
         when(mockRequest.getParameter("email")).thenReturn("test@google.com");
         when(mockRequest.getParameter("password")).thenReturn("testpassword");
 
@@ -50,7 +50,7 @@ class WebUtilTest {
     }
 
     @Test
-    void getToken() {
+    void testGetTokenReturnCorrectCookieFromRequest() {
         Cookie mockCookie = mock(Cookie.class);
         Cookie[] cookies = new Cookie[]{mockCookie};
 

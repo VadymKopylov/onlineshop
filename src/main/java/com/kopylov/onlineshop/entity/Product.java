@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 public class Product {
     private int id;
-    private String name;
-    private double price;
+    private final String name;
+    private final double price;
     private LocalDateTime creationDate;
 
     public Product(String name, double price) {

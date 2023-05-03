@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class EditProductServlet extends HttpServlet {
-    private ProductService productService;
+    private final ProductService productService;
 
 
     public EditProductServlet(ProductService productService) {

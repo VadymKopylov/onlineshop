@@ -16,7 +16,7 @@ class ProductRowMapperTest {
     @Test
     public void testProductMapRow() throws SQLException {
         ProductRowMapper productRowMapper = new ProductRowMapper();
-        LocalDateTime localDateTime = LocalDateTime.of(2022,10,10,10,10,10);
+        LocalDateTime localDateTime = LocalDateTime.of(2022, 10, 10, 10, 10, 10);
         Timestamp timestamp = Timestamp.valueOf(localDateTime);
 
         ResultSet resultSetMock = mock(ResultSet.class);
@@ -27,9 +27,9 @@ class ProductRowMapperTest {
 
         Product actual = productRowMapper.mapRow(resultSetMock);
 
-        assertEquals(5,actual.getId());
-        assertEquals("Car",actual.getName());
-        assertEquals(1000.0,actual.getPrice());
-        assertEquals(localDateTime,actual.getCreationDate());
+        assertEquals(5, actual.getId());
+        assertEquals("Car", actual.getName());
+        assertEquals(1000.0, actual.getPrice());
+        assertEquals(localDateTime, actual.getCreationDate());
     }
 }

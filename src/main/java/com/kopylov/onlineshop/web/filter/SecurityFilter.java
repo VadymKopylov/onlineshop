@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class SecurityFilter implements Filter {
-    private SecurityService securityService;
+    private final SecurityService securityService;
 
     public SecurityFilter(SecurityService securityService) {
         this.securityService = securityService;

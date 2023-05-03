@@ -33,7 +33,7 @@ public class Starter {
         context.addServlet(new ServletHolder(new DeleteAllProductsServlet(productService)), "/product/delete/all");
         context.addServlet(new ServletHolder(new FilterProductServlet(productService)), "/filter");
         context.addServlet(new ServletHolder(new UserLoginServlet(userService)), "/user/login");
-        context.addFilter(new FilterHolder(new SecurityFilter(securityService)),"/product/*", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(new FilterHolder(new SecurityFilter(securityService)), "/product/*", EnumSet.of(DispatcherType.REQUEST));
 
         Server server = new Server(8081);
         server.setHandler(context);

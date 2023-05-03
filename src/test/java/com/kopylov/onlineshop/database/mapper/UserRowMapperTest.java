@@ -22,9 +22,9 @@ class UserRowMapperTest {
 
         User actual = userRowMapper.mapRow(resultSet);
 
-        assertEquals("example@gmail.com",actual.getEmail());
-        assertEquals("password",actual.getPassword());
-        assertEquals("salt",actual.getSalt());
+        assertEquals("example@gmail.com", actual.getEmail());
+        assertEquals("password", actual.getPassword());
+        assertEquals("salt", actual.getSalt());
     }
 
 }

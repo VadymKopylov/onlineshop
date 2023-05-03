@@ -4,15 +4,12 @@ import com.kopylov.onlineshop.entity.User;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SecurityService {
-    private List<String> userTokens = new ArrayList<>();
+    private final List<String> userTokens = Collections.synchronizedList(new ArrayList<>());
 
 
     public User fillUser(User user) {

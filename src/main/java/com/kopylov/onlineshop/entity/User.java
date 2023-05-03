@@ -1,8 +1,8 @@
 package com.kopylov.onlineshop.entity;
 
 public class User {
-    private String email;
-    private String password;
+    private final String email;
+    private final String password;
     private String salt;
 
     public User(String email, String password) {

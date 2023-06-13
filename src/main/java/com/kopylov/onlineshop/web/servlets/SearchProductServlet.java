@@ -1,12 +1,13 @@
 package com.kopylov.onlineshop.web.servlets;
 
 import com.kopylov.onlineshop.entity.Product;
-import com.kopylov.onlineshop.entity.service.ProductService;
+import com.kopylov.onlineshop.service.ProductService;
 import com.kopylov.onlineshop.web.templater.PageGenerator;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -20,34 +21,23 @@ public class SearchProductServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            int productsCount;
-            productsCount = productService.countProduct();
-            if (productsCount == 0) {
-                response.getWriter().println(PageGenerator.instance().getPage("emptyDataBasePage.html"));
-            } else {
-                response.getWriter().println(PageGenerator.instance().getPage("searchPage.html"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        List<Product> byName;
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            int productId = Integer.parseInt(request.getParameter("productId"));
-            List<Product> productById = productService.findProductById(productId);
-            Map<String, Object> product = new HashMap<>();
-            product.put("Products", productById);
-            response.getWriter().println(PageGenerator.instance().getPage("editProductPage.html", product));
-            response.setContentType("text/html;charset=utf-8");
-            response.setStatus(HttpServletResponse.SC_OK);
-        } catch (Exception e) {
-            Map<String, Object> parameters = Map.of("errorMessage", "Product with this ID does not exist");
-            response.getWriter().println(PageGenerator.instance().getPage("searchPage.html", parameters));
+        String searchAttribute = (String) session.getAttribute("search");
+        if (searchAttribute != null) {
+            byName = productService.findByName(searchAttribute, request.getParameter("sort"));
+        } else {
+            searchAttribute = request.getParameter("search");
+            byName = productService.findByName(searchAttribute, request.getParameter("sort"));
+            session.setAttribute("search", searchAttribute);
         }
+
+        Map<String, Object> products = new HashMap<>();
+        products.put("Products", byName);
+        response.getWriter().println(PageGenerator.instance().getPage("allProduct.html", products));
     }
 }
+
 

@@ -2,7 +2,7 @@ CREATE TABLE Products (
 id SERIAL PRIMARY KEY,
 name VARCHAR(20),
 price NUMERIC(10,2),
-creationDate TIMESTAMP
+creation_date TIMESTAMP
 );
 
 CREATE TABLE Users (

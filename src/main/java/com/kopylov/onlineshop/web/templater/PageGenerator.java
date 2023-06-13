@@ -9,11 +9,18 @@ import java.util.Collections;
 import java.util.Map;
 
 
+import freemarker.cache.ClassTemplateLoader;
+
 public class PageGenerator {
-    private static final String HTML_DIR = "src/main/resources/templates/page";
+    private static final String TEMPLATE_DIR = "/templates";
 
     private static PageGenerator pageGenerator;
-    private final Configuration cfg;
+    private final Configuration configuration;
+
+    private PageGenerator() {
+        configuration = new Configuration(Configuration.VERSION_2_3_31);
+        configuration.setTemplateLoader(new ClassTemplateLoader(PageGenerator.class, TEMPLATE_DIR));
+    }
 
     public static PageGenerator instance() {
         if (pageGenerator == null)
@@ -28,15 +35,11 @@ public class PageGenerator {
     public String getPage(String filename, Map<String, Object> data) {
         Writer stream = new StringWriter();
         try {
-            Template template = cfg.getTemplate(HTML_DIR + File.separator + filename);
+            Template template = configuration.getTemplate(filename);
             template.process(data, stream);
         } catch (IOException | TemplateException e) {
             throw new RuntimeException(e);
         }
         return stream.toString();
-    }
-
-    private PageGenerator() {
-        cfg = new Configuration();
     }
 }

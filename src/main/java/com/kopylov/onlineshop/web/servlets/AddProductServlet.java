@@ -1,12 +1,12 @@
 package com.kopylov.onlineshop.web.servlets;
 
-import com.kopylov.onlineshop.entity.service.ProductService;
+import com.kopylov.onlineshop.service.ProductService;
 import com.kopylov.onlineshop.web.templater.PageGenerator;
 import com.kopylov.onlineshop.web.util.WebUtil;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AddProductServlet extends HttpServlet {
@@ -23,12 +23,8 @@ public class AddProductServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            productService.addToDataBase(WebUtil.getProduct(request));
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().println(PageGenerator.instance().getPage("afterAddingPage.html"));
-        } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-        }
+        productService.addToDataBase(WebUtil.getProduct(request));
+        request.setAttribute("message", "Product was added");
+        response.sendRedirect("/?message=success");
     }
 }

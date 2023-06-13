@@ -2,10 +2,10 @@ package com.kopylov.onlineshop.web.util;
 
 import com.kopylov.onlineshop.entity.Product;
 import com.kopylov.onlineshop.entity.User;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -27,11 +27,11 @@ class WebUtilTest {
 
     @Test
     void testGetProductByIdReturnCorrectParametersFromRequest() {
-        int id = 1;
+        when(mockRequest.getParameter("productId")).thenReturn(String.valueOf(1));
         when(mockRequest.getParameter("productName")).thenReturn("Car");
         when(mockRequest.getParameter("price")).thenReturn(String.valueOf(3500.00));
 
-        Product product = WebUtil.getProductById(mockRequest, id);
+        Product product = WebUtil.updateProduct(mockRequest);
 
         assertEquals(1, product.getId());
         assertEquals("Car", product.getName());

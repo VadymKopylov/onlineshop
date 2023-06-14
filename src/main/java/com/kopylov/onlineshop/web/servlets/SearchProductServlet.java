@@ -7,18 +7,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 public class SearchProductServlet extends HttpServlet {
     private final ProductService productService;
-
-    public SearchProductServlet(ProductService productService) {
-        this.productService = productService;
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -37,6 +35,7 @@ public class SearchProductServlet extends HttpServlet {
         Map<String, Object> products = new HashMap<>();
         products.put("Products", byName);
         response.getWriter().println(PageGenerator.instance().getPage("allProduct.html", products));
+        session.removeAttribute("search");
     }
 }
 

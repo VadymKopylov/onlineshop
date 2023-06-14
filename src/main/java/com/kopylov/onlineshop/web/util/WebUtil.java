@@ -1,7 +1,7 @@
 package com.kopylov.onlineshop.web.util;
 
+import com.kopylov.onlineshop.entity.Credentials;
 import com.kopylov.onlineshop.entity.Product;
-import com.kopylov.onlineshop.entity.User;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -32,16 +32,13 @@ public class WebUtil {
                 .build();
     }
 
-    public static User getUser(HttpServletRequest request) {
+    public static Credentials getCredentials(HttpServletRequest request) {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
             throw new IllegalArgumentException("Email and password are required");
         }
-        return User.builder()
-                .email(email)
-                .password(password)
-                .build();
+        return new Credentials(email,password);
     }
 
     public static String getToken(HttpServletRequest request) {
@@ -50,6 +47,7 @@ public class WebUtil {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("user-token")) {
+
                     token = cookie.getValue();
                 }
             }

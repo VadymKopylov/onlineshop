@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class AllRequestsServlet extends HttpServlet {
+public class AdminProductEditServlet extends HttpServlet {
     private final ProductService productService;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         List<Product> allProducts = productService.findAll(request.getParameter("sort"));
         Map<String, Object> products = new HashMap<>();
         products.put("Products", allProducts);
-        response.getWriter().println(PageGenerator.instance().getPage("allProduct.html", products));
+        response.getWriter().println(PageGenerator.instance().getPage("adminPage.html", products));
     }
 }

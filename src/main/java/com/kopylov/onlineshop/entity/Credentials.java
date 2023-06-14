@@ -1,13 +1,11 @@
 package com.kopylov.onlineshop.entity;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
-@Builder
-public class User {
+@RequiredArgsConstructor
+public class Credentials {
     private final String email;
     private final String password;
-    private String salt;
-    private UserRole role;
 }

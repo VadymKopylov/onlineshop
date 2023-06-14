@@ -3,10 +3,12 @@ package com.kopylov.onlineshop;
 import com.kopylov.onlineshop.dao.jdbc.ConnectionFactory;
 import com.kopylov.onlineshop.dao.jdbc.JdbcProductsDao;
 import com.kopylov.onlineshop.dao.jdbc.JdbcUserDao;
+import com.kopylov.onlineshop.service.CartService;
 import com.kopylov.onlineshop.service.ProductService;
 import com.kopylov.onlineshop.service.UserService;
 import com.kopylov.onlineshop.util.PropertiesReader;
-import com.kopylov.onlineshop.web.security.SecurityFilter;
+import com.kopylov.onlineshop.web.security.AdminSecurityFilter;
+import com.kopylov.onlineshop.web.security.UserSecurityFilter;
 import com.kopylov.onlineshop.service.SecurityService;
 import com.kopylov.onlineshop.web.servlets.*;
 import jakarta.servlet.DispatcherType;
@@ -28,17 +30,21 @@ public class Starter {
         UserService userService = new UserService(jdbcUserDao);
         SecurityService securityService = new SecurityService(userService);
         ProductService productService = new ProductService(jdbcProductsDao);
+        CartService cartService = new CartService(productService);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
         context.addServlet(new ServletHolder(new AllRequestsServlet(productService)), "");
+        context.addServlet(new ServletHolder(new AdminProductEditServlet(productService)), "/admin");
         context.addServlet(new ServletHolder(new AddProductServlet(productService)), "/product/add");
         context.addServlet(new ServletHolder(new EditProductServlet(productService)), "/product/edit");
         context.addServlet(new ServletHolder(new DeleteProductServlet(productService)), "/product/delete");
         context.addServlet(new ServletHolder(new UserLoginServlet(securityService)), "/login");
         context.addServlet(new ServletHolder(new SearchProductServlet(productService)),"/search");
-        context.addFilter(new FilterHolder(new SecurityFilter(securityService)), "/product/*", EnumSet.of(DispatcherType.REQUEST));
-
+        context.addFilter(new FilterHolder(new UserSecurityFilter(securityService)), "/product/*", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(new FilterHolder(new AdminSecurityFilter(securityService)), "/admin", EnumSet.of(DispatcherType.REQUEST));
+        context.addServlet(new ServletHolder(new CartServlet()), "/product/cart");
+        context.addServlet(new ServletHolder(new AddToCartServlet(cartService)), "/product/addtocart");
         Server server = new Server(8081);
         server.setHandler(context);
 

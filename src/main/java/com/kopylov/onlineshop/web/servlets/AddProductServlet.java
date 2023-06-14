@@ -6,15 +6,13 @@ import com.kopylov.onlineshop.web.util.WebUtil;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 
+@RequiredArgsConstructor
 public class AddProductServlet extends HttpServlet {
     private final ProductService productService;
-
-    public AddProductServlet(ProductService productService) {
-        this.productService = productService;
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -23,8 +21,9 @@ public class AddProductServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
         productService.addToDataBase(WebUtil.getProduct(request));
         request.setAttribute("message", "Product was added");
-        response.sendRedirect("/?message=success");
+        response.sendRedirect("/admin?message=success");
     }
 }

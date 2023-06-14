@@ -1,50 +1,77 @@
 package com.kopylov.onlineshop.service;
 
+import com.kopylov.onlineshop.entity.Credentials;
+import com.kopylov.onlineshop.entity.Product;
 import com.kopylov.onlineshop.entity.User;
+import com.kopylov.onlineshop.entity.UserRole;
+import com.kopylov.onlineshop.web.util.DefaultSession;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@RequiredArgsConstructor
 public class SecurityService {
     private final UserService userService;
-    private final List<String> userTokens = Collections.synchronizedList(new ArrayList<>());
+    private final Map<String, DefaultSession> sessionsMap = Collections.synchronizedMap(new HashMap<>());
 
-    public SecurityService(UserService userService) {
-        this.userService = userService;
-    }
-
-    public String login(User user) {
-        if (!userService.isExist(user)) {
-            userService.addToDataBase(fillUser(user));
-            return assignToken();
+    //We don't use registration, so the user is filled in from the credentials
+    public DefaultSession login(Credentials credentials) {
+        if (!userService.isExist(credentials.getEmail())) {
+            User user = fillUser(credentials);
+            userService.addToDataBase(user);
+            return createSession(user);
         } else {
-            if (isPasswordMatch(userService.findByEmail(user.getEmail()), user.getPassword())) {
-                return assignToken();
+            User user = userService.findByEmail(credentials.getEmail());
+            if (isPasswordMatch(user,credentials.getPassword())){
+                return createSession(user);
             }
         }
         return null;
     }
+    public void logout(){
 
-    public User fillUser(User user) {
+    }
+    public DefaultSession createSession(User user) {
+        String token = assignToken();
+        LocalDateTime expireDate = LocalDateTime.now().plusMinutes(60);
+        List<Product> cart = new ArrayList<>();
+        DefaultSession session = DefaultSession.builder()
+                .token(token)
+                .expireDate(expireDate)
+                .user(user)
+                .cart(cart)
+                .attribute(null)
+                .build();
+        sessionsMap.put(token, session);
+        return session;
+    }
+//TODO IsBefore??
+    public DefaultSession getSession(String token) {
+        DefaultSession session = sessionsMap.get(token);
+        if (session == null) {
+            return null;
+        }
+        if (session.getExpireDate().isBefore(LocalDateTime.now())) {
+            sessionsMap.remove(token);
+            return null;
+        }
+        return session;
+    }
+
+    public User fillUser(Credentials credentials) {
         String salt = generateRandomSalt();
-        String hashedPassword = DigestUtils.md5Hex(user.getPassword() + salt);
+        String hashedPassword = DigestUtils.md5Hex(credentials.getPassword() + salt);
         return User.builder()
-                .email(user.getEmail())
+                .role(UserRole.USER)
+                .email(credentials.getEmail())
                 .password(hashedPassword)
                 .salt(salt)
                 .build();
-    }
-
-    public boolean isAuth(String token) {
-        for (String userToken : userTokens) {
-            if (userToken.equals(token)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public boolean isPasswordMatch(User user, String password) {
@@ -53,9 +80,7 @@ public class SecurityService {
     }
 
     public String assignToken() {
-        String userToken = UUID.randomUUID().toString();
-        userTokens.add(userToken);
-        return userToken;
+        return UUID.randomUUID().toString();
     }
 
     String generateRandomSalt() {

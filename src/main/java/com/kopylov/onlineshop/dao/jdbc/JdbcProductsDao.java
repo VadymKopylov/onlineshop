@@ -3,17 +3,15 @@ package com.kopylov.onlineshop.dao.jdbc;
 import com.kopylov.onlineshop.dao.jdbc.mapper.ProductRowMapper;
 import com.kopylov.onlineshop.dao.ProductsDao;
 import com.kopylov.onlineshop.entity.Product;
+import lombok.RequiredArgsConstructor;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class JdbcProductsDao implements ProductsDao {
     private final ConnectionFactory connectionFactory;
-
-    public JdbcProductsDao(ConnectionFactory connectionFactory) {
-        this.connectionFactory = connectionFactory;
-    }
 
     private static final String SELECT_PRODUCT_BY_NAME_SQL = """
             SELECT * FROM products WHERE name LIKE ?
@@ -80,18 +78,15 @@ public class JdbcProductsDao implements ProductsDao {
     }
 
     @Override
-    public List<Product> findById(int id) {
+    public Product findById(int id) {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_PRODUCT_SQL)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
-                List<Product> products = new ArrayList<>();
                 if (!resultSet.next()) {
                     throw new RuntimeException("Product with id: " + id + " not found");
                 }
-                Product product = new ProductRowMapper().mapRow(resultSet);
-                products.add(product);
-                return products;
+                return new ProductRowMapper().mapRow(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();

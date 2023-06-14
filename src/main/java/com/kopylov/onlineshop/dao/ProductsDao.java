@@ -14,7 +14,7 @@ public interface ProductsDao {
 
     void deleteById(int id);
 
-    List<Product> findById(int id);
+    Product findById(int id);
 
     List<Product> findByName(String name);
 }

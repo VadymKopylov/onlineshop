@@ -2,6 +2,7 @@ package com.kopylov.onlineshop.service;
 
 import com.kopylov.onlineshop.dao.ProductsDao;
 import com.kopylov.onlineshop.entity.Product;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,18 +10,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class ProductService {
     private final ProductsDao productsDao;
     private final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
-    public ProductService(ProductsDao productsDao) {
-        this.productsDao = productsDao;
-    }
-
-    public List<Product> findById(int id) {
-        List<Product> productById = productsDao.findById(id);
-        if (productById != null) {
-            return productById;
+    public Product findById(int id) {
+        Product byId = productsDao.findById(id);
+        if (byId != null) {
+            return byId;
         } else {
             throw new IllegalArgumentException();
         }

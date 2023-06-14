@@ -33,7 +33,7 @@ public class SecurityService {
         }
         return null;
     }
-    public void logout(){
+    public void logout(String token){
 
     }
     public DefaultSession createSession(User user) {

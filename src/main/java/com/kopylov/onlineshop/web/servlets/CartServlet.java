@@ -20,6 +20,6 @@ public class CartServlet extends HttpServlet {
 
         Map<String, Object> products = new HashMap<>();
         products.put("Products", cart);
-        response.getWriter().println(PageGenerator.instance().getPage("allProduct.html", products));
+        response.getWriter().println(PageGenerator.instance().getPage("cartPage.html", products));
     }
 }

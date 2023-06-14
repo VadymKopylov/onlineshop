@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-public class UserLoginServlet extends HttpServlet {
+public class LoginServlet extends HttpServlet {
     private final SecurityService securityService;
 
     @Override
@@ -33,6 +33,8 @@ public class UserLoginServlet extends HttpServlet {
             }else if(session.getUser().getRole().toString().equals("USER")){
                 response.sendRedirect("");
             }
+        }else {
+            response.sendRedirect("/login?error=invalidCredentials");
         }
     }
 }

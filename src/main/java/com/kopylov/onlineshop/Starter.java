@@ -39,12 +39,14 @@ public class Starter {
         context.addServlet(new ServletHolder(new AddProductServlet(productService)), "/product/add");
         context.addServlet(new ServletHolder(new EditProductServlet(productService)), "/product/edit");
         context.addServlet(new ServletHolder(new DeleteProductServlet(productService)), "/product/delete");
-        context.addServlet(new ServletHolder(new UserLoginServlet(securityService)), "/login");
+        context.addServlet(new ServletHolder(new LoginServlet(securityService)), "/login");
+        context.addServlet(new ServletHolder(new LogoutServlet(securityService)), "/logout");
         context.addServlet(new ServletHolder(new SearchProductServlet(productService)),"/search");
         context.addFilter(new FilterHolder(new UserSecurityFilter(securityService)), "/product/*", EnumSet.of(DispatcherType.REQUEST));
         context.addFilter(new FilterHolder(new AdminSecurityFilter(securityService)), "/admin", EnumSet.of(DispatcherType.REQUEST));
         context.addServlet(new ServletHolder(new CartServlet()), "/product/cart");
-        context.addServlet(new ServletHolder(new AddToCartServlet(cartService)), "/product/addtocart");
+        context.addServlet(new ServletHolder(new AddToCartServlet(cartService)), "/product/cart/add");
+        context.addServlet(new ServletHolder(new DeleteFromCartServlet(cartService)), "/product/cart/delete");
         Server server = new Server(8081);
         server.setHandler(context);
 

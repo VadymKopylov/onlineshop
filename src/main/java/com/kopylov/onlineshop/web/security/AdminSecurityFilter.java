@@ -34,7 +34,7 @@ public class AdminSecurityFilter implements Filter {
                             response.sendError(HttpServletResponse.SC_FORBIDDEN);
                         }
                     } else {
-                        response.sendRedirect("/login");
+                        response.sendRedirect("/");
                     }
                 }
             }

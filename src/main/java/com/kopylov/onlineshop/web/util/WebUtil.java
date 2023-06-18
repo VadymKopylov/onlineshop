@@ -38,7 +38,7 @@ public class WebUtil {
         if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
             throw new IllegalArgumentException("Email and password are required");
         }
-        return new Credentials(email,password);
+        return new Credentials(email, password);
     }
 
     public static String getToken(HttpServletRequest request) {
@@ -47,7 +47,6 @@ public class WebUtil {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("user-token")) {
-
                     token = cookie.getValue();
                 }
             }

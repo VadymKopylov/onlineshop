@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -22,15 +21,15 @@ public class EditProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int productId = Integer.parseInt(request.getParameter("id"));
         Product productById = productService.findById(productId);
-        Map<String,Object> productToChange = new HashMap<>();
-        productToChange.put("Product",productById);
-        response.getWriter().println(PageGenerator.instance().getPage("editProductPage.html",productToChange));
+        Map<String, Object> productToChange = new HashMap<>();
+        productToChange.put("Product", productById);
+        response.getWriter().println(PageGenerator.instance().getPage("editProductPage.html", productToChange));
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-            productService.update(WebUtil.updateProduct(request));
-            response.sendRedirect("/admin");
+        productService.update(WebUtil.updateProduct(request));
+        response.sendRedirect("/admin");
     }
 }
 

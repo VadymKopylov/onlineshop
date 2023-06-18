@@ -19,7 +19,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="btn btn-outline-success" aria-current="page" href="/product/add">Add product</a>
+                        <a class="btn btn-outline-success" aria-current="page" href="/admin/product/add">Add product</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -78,7 +78,7 @@
                 <p class="fw-normal mb-1">${product.creationDate}</p>
             </td>
             <td>
-                <a href="/product/edit?id=${product.id}" class="btn btn-link">Edit</a>
+                <a href="/admin/product/edit?id=${product.id}" class="btn btn-link">Edit</a>
 
                 <button type="button" class="btn btn-link" data-bs-toggle="modal"
                         data-bs-target="#exampleModal${product.id}">
@@ -95,7 +95,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <form action="/product/delete" method="post">
+                                <form action="/admin/product/delete" method="post">
                                     <input type="hidden" name="id" value="${product.id}">
                                     <button type="submit" class="btn btn-primary">Delete</button>
                                 </form>

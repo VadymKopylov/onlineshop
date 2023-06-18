@@ -14,8 +14,8 @@ public class DeleteProductServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-            int productId = Integer.parseInt(request.getParameter("id"));
-            productService.deleteById(productId);
-            response.sendRedirect("/admin");
+        int productId = Integer.parseInt(request.getParameter("id"));
+        productService.deleteById(productId);
+        response.sendRedirect("/admin");
     }
 }

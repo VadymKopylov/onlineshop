@@ -17,15 +17,16 @@ class UserRowMapperTest {
         UserRowMapper userRowMapper = new UserRowMapper();
 
         ResultSet resultSet = mock(ResultSet.class);
+        when(resultSet.getString("role_name")).thenReturn("USER");
         when(resultSet.getString("email")).thenReturn("example@gmail.com");
         when(resultSet.getString("password")).thenReturn("password");
         when(resultSet.getString("salt")).thenReturn("salt");
 
         User actual = userRowMapper.mapRow(resultSet);
 
+        assertEquals("USER",actual.getRole().toString());
         assertEquals("example@gmail.com", actual.getEmail());
         assertEquals("password", actual.getPassword());
         assertEquals("salt", actual.getSalt());
     }
-
 }

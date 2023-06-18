@@ -28,12 +28,12 @@ public class LoginServlet extends HttpServlet {
             Cookie cookie = new Cookie("sessionId", session.getToken());
             cookie.setPath("/");
             response.addCookie(cookie);
-            if(session.getUser().getRole().toString().equals("ADMIN")){
+            if (session.getUser().getRole().toString().equals("ADMIN")) {
                 response.sendRedirect("/admin");
-            }else if(session.getUser().getRole().toString().equals("USER")){
+            } else if (session.getUser().getRole().toString().equals("USER")) {
                 response.sendRedirect("");
             }
-        }else {
+        } else {
             response.sendRedirect("/login?error=invalidCredentials");
         }
     }

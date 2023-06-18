@@ -6,11 +6,11 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionFactory {
-    private String url;
-    private String user;
-    private String password;
+    private final String url;
+    private final String user;
+    private final String password;
 
-    public ConnectionFactory(Properties properties){
+    public ConnectionFactory(Properties properties) {
         this.url = properties.getProperty("url");
         this.user = properties.getProperty("login");
         this.password = properties.getProperty("password");
@@ -18,7 +18,7 @@ public class ConnectionFactory {
 
     public Connection getConnection() {
         try {
-            return DriverManager.getConnection(url,user,password);
+            return DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Error with connection to db", e);

@@ -17,6 +17,7 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class SecurityService {
     private final UserService userService;
+    private final long sessionTimeToLive;
     private final Map<String, DefaultSession> sessionsMap = Collections.synchronizedMap(new HashMap<>());
 
     //We don't use registration, so the user is filled in from the credentials
@@ -27,18 +28,20 @@ public class SecurityService {
             return createSession(user);
         } else {
             User user = userService.findByEmail(credentials.getEmail());
-            if (isPasswordMatch(user,credentials.getPassword())){
+            if (isPasswordMatch(user, credentials.getPassword())) {
                 return createSession(user);
             }
         }
         return null;
     }
-    public void logout(String token){
 
+    public void logout(String token) {
+        sessionsMap.remove(token);
     }
+
     public DefaultSession createSession(User user) {
         String token = assignToken();
-        LocalDateTime expireDate = LocalDateTime.now().plusMinutes(60);
+        LocalDateTime expireDate = LocalDateTime.now().plusMinutes(sessionTimeToLive);
         List<Product> cart = new ArrayList<>();
         DefaultSession session = DefaultSession.builder()
                 .token(token)
@@ -50,7 +53,7 @@ public class SecurityService {
         sessionsMap.put(token, session);
         return session;
     }
-//TODO IsBefore??
+
     public DefaultSession getSession(String token) {
         DefaultSession session = sessionsMap.get(token);
         if (session == null) {
@@ -61,6 +64,16 @@ public class SecurityService {
             return null;
         }
         return session;
+    }
+
+    public DefaultSession getGuestSession() {
+        return DefaultSession.builder()
+                .token(null)
+                .expireDate(null)
+                .user(null)
+                .cart(null)
+                .attribute(null)
+                .build();
     }
 
     public User fillUser(Credentials credentials) {

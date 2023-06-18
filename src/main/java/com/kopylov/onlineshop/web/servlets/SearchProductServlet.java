@@ -2,11 +2,13 @@ package com.kopylov.onlineshop.web.servlets;
 
 import com.kopylov.onlineshop.entity.Product;
 import com.kopylov.onlineshop.service.ProductService;
+import com.kopylov.onlineshop.service.SecurityService;
 import com.kopylov.onlineshop.web.templater.PageGenerator;
+import com.kopylov.onlineshop.web.util.DefaultSession;
+import com.kopylov.onlineshop.web.util.WebUtil;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
@@ -17,26 +19,35 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SearchProductServlet extends HttpServlet {
     private final ProductService productService;
+    private final SecurityService securityService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession();
-        List<Product> byName;
+        String token = WebUtil.getToken(request);
+        String searchParameter;
+        List<Product> byName = null;
+        DefaultSession guestSession = null;
+        if (token == null) {
+            guestSession = securityService.getGuestSession();
 
-        String searchAttribute = (String) session.getAttribute("search");
-        if (searchAttribute != null) {
-            byName = productService.findByName(searchAttribute, request.getParameter("sort"));
+            searchParameter = request.getParameter("search");
+            byName = productService.findByName(searchParameter, request.getParameter("sort"));
+            guestSession.setAttribute(searchParameter);
         } else {
-            searchAttribute = request.getParameter("search");
-            byName = productService.findByName(searchAttribute, request.getParameter("sort"));
-            session.setAttribute("search", searchAttribute);
+            searchParameter = request.getParameter("search");
+            if (searchParameter != null) {
+                byName = productService.findByName(searchParameter, request.getParameter("sort"));
+            }
         }
 
         Map<String, Object> products = new HashMap<>();
         products.put("Products", byName);
         response.getWriter().println(PageGenerator.instance().getPage("allProduct.html", products));
-        session.removeAttribute("search");
+        if (guestSession != null) {
+            guestSession.setAttribute(null);
+        }
     }
 }
+
 
 

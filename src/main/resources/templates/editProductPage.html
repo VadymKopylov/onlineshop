@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <h1>Change the required values:</h1><br>
-    <#list Product as product>
+    <#assign product = Product>
     <form action="/product/edit" method="POST">
         <div class="form-group">
             <input type="hidden" name="id" value="${product.id}">
@@ -30,7 +30,7 @@
             </div>
         </div>
     </form>
-</#list>
 </div>
 </body>
 </html>
+

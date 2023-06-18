@@ -52,7 +52,7 @@ public class ProductService {
         return sortByCriteria(setFormattedTime(productByName), value);
     }
 
-    private List<Product> setFormattedTime(List<Product>products) {
+    private List<Product> setFormattedTime(List<Product> products) {
         for (Product allProduct : products) {
             LocalDateTime creationDate = allProduct.getCreationDate();
             String formattedDateTime = creationDate.format(DATE_TIME_FORMATTER);

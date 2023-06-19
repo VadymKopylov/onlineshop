@@ -14,7 +14,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class JdbcProductsDaoITest {
     @Test
     void testFindAllReturnCorrectData() {
-        ConnectionFactory connectionFactory = new ConnectionFactory(new Properties());
+        Properties properties = new Properties();
+        properties.setProperty("url","jdbc:postgresql://localhost:5432/shopdatabase");
+        properties.setProperty("login","postgres");
+        properties.setProperty("password","mysecretpassword");
+        ConnectionFactory connectionFactory = new ConnectionFactory(properties);
         JdbcProductsDao jdbcProductsDao = new JdbcProductsDao(connectionFactory);
         List<Product> products = jdbcProductsDao.findAll();
         assertFalse(products.isEmpty());

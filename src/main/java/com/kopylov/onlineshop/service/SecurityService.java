@@ -105,4 +105,9 @@ public class SecurityService {
                 .mapToObj(randomIndex -> String.valueOf(chars.charAt(randomIndex)))
                 .collect(Collectors.joining());
     }
+
+    //Create for Test only
+    Map<String, DefaultSession> getSessionsMap() {
+        return sessionsMap;
+    }
 }

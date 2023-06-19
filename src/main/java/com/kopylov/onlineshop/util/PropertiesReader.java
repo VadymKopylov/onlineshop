@@ -1,9 +1,12 @@
 package com.kopylov.onlineshop.util;
 
+import lombok.Setter;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+@Setter
 public class PropertiesReader {
     private final String path;
     private Properties properties;
@@ -34,9 +37,10 @@ public class PropertiesReader {
         String sessionTimeToLive = properties.getProperty(name);
         return Long.parseLong(sessionTimeToLive);
     }
-    public Long getLongProperties(String name,long defaultValue) {
+
+    public Long getLongProperties(String name, long defaultValue) {
         String sessionTimeToLive = properties.getProperty(name);
-        if(sessionTimeToLive == null){
+        if (sessionTimeToLive == null) {
             return defaultValue;
         }
         return Long.parseLong(sessionTimeToLive);

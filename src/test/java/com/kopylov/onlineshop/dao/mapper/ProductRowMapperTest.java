@@ -24,7 +24,7 @@ class ProductRowMapperTest {
         when(resultSetMock.getInt("id")).thenReturn(5);
         when(resultSetMock.getString("name")).thenReturn("Car");
         when(resultSetMock.getDouble("price")).thenReturn(1000.0);
-        when(resultSetMock.getTimestamp("creationDate")).thenReturn(timestamp);
+        when(resultSetMock.getTimestamp("creation_date")).thenReturn(timestamp);
 
         Product actual = productRowMapper.mapRow(resultSetMock);
 

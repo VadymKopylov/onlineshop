@@ -1,8 +1,7 @@
-/*
 package com.kopylov.onlineshop.web.util;
 
+import com.kopylov.onlineshop.entity.Credentials;
 import com.kopylov.onlineshop.entity.Product;
-import com.kopylov.onlineshop.entity.User;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
@@ -27,8 +26,32 @@ class WebUtilTest {
     }
 
     @Test
-    void testGetProductByIdReturnCorrectParametersFromRequest() {
-        when(mockRequest.getParameter("productId")).thenReturn(String.valueOf(1));
+    void testGetProductThrowIllegalArgumentExceptionWhenProductNameIsNull() {
+        when(mockRequest.getParameter("productName")).thenReturn(null);
+        when(mockRequest.getParameter("price")).thenReturn(String.valueOf(1500.00));
+
+        assertThrows(IllegalArgumentException.class, () -> WebUtil.getProduct(mockRequest));
+    }
+
+    @Test
+    void testGetProductThrowIllegalArgumentExceptionWhenProductNameIsEmpty() {
+        when(mockRequest.getParameter("productName")).thenReturn("");
+        when(mockRequest.getParameter("price")).thenReturn(String.valueOf(1500.00));
+
+        assertThrows(IllegalArgumentException.class, () -> WebUtil.getProduct(mockRequest));
+    }
+
+    @Test
+    void testGetProductThrowIllegalArgumentExceptionWhenProductPriceEqualsZero() {
+        when(mockRequest.getParameter("productName")).thenReturn("Car");
+        when(mockRequest.getParameter("price")).thenReturn(String.valueOf(0));
+
+        assertThrows(IllegalArgumentException.class, () -> WebUtil.getProduct(mockRequest));
+    }
+
+    @Test
+    void testUpdateProductByIdReturnCorrectParametersFromRequest() {
+        when(mockRequest.getParameter("id")).thenReturn(String.valueOf(1));
         when(mockRequest.getParameter("productName")).thenReturn("Car");
         when(mockRequest.getParameter("price")).thenReturn(String.valueOf(3500.00));
 
@@ -40,14 +63,82 @@ class WebUtilTest {
     }
 
     @Test
-    void testGetUserReturnCorrectParametersFromRequest() {
+    void testUpdateProductByIdThrowIllgarArgumentExceptionWhenIdIsZero() {
+        when(mockRequest.getParameter("id")).thenReturn(String.valueOf(0));
+        when(mockRequest.getParameter("productName")).thenReturn("Car");
+        when(mockRequest.getParameter("price")).thenReturn(String.valueOf(3500.00));
+
+        assertThrows(IllegalArgumentException.class, () -> WebUtil.updateProduct(mockRequest));
+    }
+
+    @Test
+    void testUpdateProductByIdThrowIllgarArgumentExceptionWhenProductNameIsEmpty() {
+        when(mockRequest.getParameter("id")).thenReturn(String.valueOf(1));
+        when(mockRequest.getParameter("productName")).thenReturn("");
+        when(mockRequest.getParameter("price")).thenReturn(String.valueOf(3500.00));
+
+        assertThrows(IllegalArgumentException.class, () -> WebUtil.updateProduct(mockRequest));
+    }
+
+    @Test
+    void testUpdateProductByIdThrowIllgarArgumentExceptionWhenProductNameIsNull() {
+        when(mockRequest.getParameter("id")).thenReturn(String.valueOf(1));
+        when(mockRequest.getParameter("productName")).thenReturn(null);
+        when(mockRequest.getParameter("price")).thenReturn(String.valueOf(3500.00));
+
+        assertThrows(IllegalArgumentException.class, () -> WebUtil.updateProduct(mockRequest));
+    }
+
+    @Test
+    void testUpdateProductByIdThrowIllgarArgumentExceptionWhenPriceIsZero() {
+        when(mockRequest.getParameter("id")).thenReturn(String.valueOf(1));
+        when(mockRequest.getParameter("productName")).thenReturn("Car");
+        when(mockRequest.getParameter("price")).thenReturn(String.valueOf(0));
+
+        assertThrows(IllegalArgumentException.class, () -> WebUtil.updateProduct(mockRequest));
+    }
+
+    @Test
+    void testGetCredentialsReturnCorrectParametersFromRequest() {
         when(mockRequest.getParameter("email")).thenReturn("test@google.com");
         when(mockRequest.getParameter("password")).thenReturn("testpassword");
 
-        User user = WebUtil.getCredentials(mockRequest);
+        Credentials credentials = WebUtil.getCredentials(mockRequest);
 
-        assertEquals("test@google.com", user.getEmail());
-        assertEquals("testpassword", user.getPassword());
+        assertEquals("test@google.com", credentials.getEmail());
+        assertEquals("testpassword", credentials.getPassword());
+    }
+
+    @Test
+    void testGetCredentialsThrowIllegalArgumentExceptionWhenEmptyEmailIsEntered() {
+        when(mockRequest.getParameter("email")).thenReturn("");
+        when(mockRequest.getParameter("password")).thenReturn("testpassword");
+
+        assertThrows(IllegalArgumentException.class, () -> WebUtil.getCredentials(mockRequest));
+    }
+
+    @Test
+    void testGetCredentialsThrowIllegalArgumentExceptionWhenEmptyPasswordIsEntered() {
+        when(mockRequest.getParameter("email")).thenReturn("Test@gmail.com");
+        when(mockRequest.getParameter("password")).thenReturn("");
+
+        assertThrows(IllegalArgumentException.class, () -> WebUtil.getCredentials(mockRequest));
+    }
+
+    @Test
+    void testGetCredentialsThrowIllegalArgumentExceptionWhenEmailIsNull() {
+        when(mockRequest.getParameter("email")).thenReturn(null);
+        when(mockRequest.getParameter("password")).thenReturn("testpassword");
+
+        assertThrows(IllegalArgumentException.class, () -> WebUtil.getCredentials(mockRequest));
+    }
+
+    @Test
+    void testGetCredentialsThrowIllegalArgumentExceptionWhenPasswordIsNull() {
+        when(mockRequest.getParameter("email")).thenReturn("Test@gmail.com");
+        when(mockRequest.getParameter("password")).thenReturn(null);
+
+        assertThrows(IllegalArgumentException.class, () -> WebUtil.getCredentials(mockRequest));
     }
 
     @Test
@@ -63,4 +154,14 @@ class WebUtilTest {
 
         assertEquals("randomToken", token);
     }
-}*/
+
+    @Test
+    void testGetTokenReturnNullIfThereIsNoCookieInTheRequest() {
+        Cookie[] cookies = new Cookie[0];
+        when(mockRequest.getCookies()).thenReturn(cookies);
+
+        String token = WebUtil.getToken(mockRequest);
+
+        assertNull(token);
+    }
+}

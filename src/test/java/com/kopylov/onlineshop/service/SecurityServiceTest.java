@@ -1,76 +1,110 @@
-/*
 package com.kopylov.onlineshop.service;
 
+import com.kopylov.onlineshop.entity.Credentials;
 import com.kopylov.onlineshop.entity.User;
+import com.kopylov.onlineshop.entity.UserRole;
+import com.kopylov.onlineshop.web.util.DefaultSession;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.Test;
 
+
+import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class SecurityServiceTest {
     private final UserService userService = mock(UserService.class);
-    private final SecurityService securityService = new SecurityService(userService);
+    private final SecurityService securityService = new SecurityService(userService, 180);
+    private final Credentials credentials = new Credentials("test@gmail.com", "password");
 
     @Test
-    void testLoginReturnTrueIfUserExist() {
-        User user = new User("test@example.com", "password");
-        User existingUser = securityService.fillUser(user);
+    void testLoginReturnSessionWhenUserExist() {
+        DefaultSession session = securityService.login(credentials);
 
-        when(userService.isExist(user.getEmail())).thenReturn(true);
-        when(userService.findByEmail(user.getEmail())).thenReturn(existingUser);
-
-        String token = securityService.login(user);
-
-        assertNotNull(token);
-        assertTrue(securityService.isAuth(token));
+        assertNotNull(session);
     }
 
     @Test
-    void testFillUserReturnNotNullUserFields() {
-        User user = new User("test@example.com", "password");
+    void testLogoutRemoveCorrectlySessionFromSessionMap() {
+        DefaultSession session = securityService.login(credentials);
+        String token = session.getToken();
+        assertNotNull(session);
 
-        User filledUser = securityService.fillUser(user);
+        securityService.logout(token);
+        Map<String, DefaultSession> sessionsMap = securityService.getSessionsMap();
 
-        assertNotNull(filledUser.getEmail());
-        assertNotNull(filledUser.getPassword());
-        assertNotNull(filledUser.getSalt());
-        assertNotEquals(user.getPassword(), filledUser.getPassword());
+        assertEquals(sessionsMap.size(), 0);
     }
 
     @Test
-    void testIsAuthReturnTrueWhenTokenIsExist() {
-        String existingToken = securityService.assignToken();
-        String nonExistingToken = "ABCDEFGHIJKLMNOP";
+    void testCreateSessionReturnCorrectSession() {
+        DefaultSession session = securityService.createSession(mock(User.class));
 
-        assertTrue(securityService.isAuth(existingToken));
-        assertFalse(securityService.isAuth(nonExistingToken));
+        assertNotNull(session.getToken());
+        assertNotNull(session.getExpireDate());
+        assertNotNull(session.getUser());
+        assertNotNull(session.getCart());
+        assertNull(session.getAttribute());
+
+    }
+
+    @Test
+    void testGetSessionReturnNotNullSession() {
+        DefaultSession expectedSession = securityService.createSession(mock(User.class));
+
+        String token = expectedSession.getToken();
+
+        assertNotNull(expectedSession);
+        DefaultSession actualSession = securityService.getSession(token);
+
+        assertNotNull(actualSession);
+        assertEquals(expectedSession, actualSession);
+    }
+
+    @Test
+    void testGetGuestSessionReturnCorrectSession() {
+        DefaultSession guestSession = securityService.getGuestSession();
+
+        assertNotNull(guestSession);
+        assertNull(guestSession.getToken());
+        assertNull(guestSession.getExpireDate());
+        assertNull(guestSession.getUser());
+        assertNull(guestSession.getCart());
+        assertNull(guestSession.getAttribute());
+    }
+
+    @Test
+    void testFillUserReturnCorrectFieldsFromCredentials() {
+        User expectedUser = User.builder()
+                .role(UserRole.USER)
+                .email("test@gmail.com")
+                .build();
+
+        User actualUser = securityService.fillUser(credentials);
+
+        assertEquals(expectedUser.getRole(), actualUser.getRole());
+        assertEquals(expectedUser.getEmail(), actualUser.getEmail());
+        assertNotNull(actualUser.getPassword());
+        assertNotNull(actualUser.getSalt());
     }
 
     @Test
     void testIsPasswordMatchReturnTrueAfterComparePasswords() {
-        String hashedPassword = DigestUtils.md5Hex("Password" + "ABCDEFGHIJKLMNOP");
-        User user = new User("test@email.com", hashedPassword, "ABCDEFGHIJKLMNOP");
-
+        String salt = "ABCDEFGHIJKLMNOP";
+        String hashedPassword = DigestUtils.md5Hex("Password" + salt);
+        User user = User.builder()
+                .password(hashedPassword)
+                .salt(salt)
+                .build();
         assertTrue(securityService.isPasswordMatch(user, "Password"));
     }
-
     @Test
-    void testAssignTokenReturnTrueWhenTokenExist() {
+    void testAssignTokenReturnNotNull() {
         String token = securityService.assignToken();
 
         assertNotNull(token);
-        assertTrue(securityService.isAuth(token));
     }
-
-    @Test
-    void testAssignTokenReturnFalseWhenTokenNotExist() {
-        String wrongToken = "NonExistentToken";
-
-        assertFalse(securityService.isAuth(wrongToken));
-    }
-
     @Test
     void testGenerateRandomSaltReturnNoyNullSaltAndCorrectSaltLength() {
         String salt = securityService.generateRandomSalt();
@@ -78,4 +112,4 @@ class SecurityServiceTest {
         assertNotNull(salt);
         assertEquals(16, salt.length());
     }
-}*/
+}

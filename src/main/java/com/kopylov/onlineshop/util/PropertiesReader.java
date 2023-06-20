@@ -24,7 +24,7 @@ public class PropertiesReader {
             }
             properties.load(inputStream);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error reading properties file: " + e.getMessage());
         }
         return properties;
     }
@@ -33,16 +33,8 @@ public class PropertiesReader {
         return new Properties(properties);
     }
 
-    public Long getLongProperties(String name) {
+    public Long getProperties(String name) {
         String sessionTimeToLive = properties.getProperty(name);
-        return Long.parseLong(sessionTimeToLive);
-    }
-
-    public Long getLongProperties(String name, long defaultValue) {
-        String sessionTimeToLive = properties.getProperty(name);
-        if (sessionTimeToLive == null) {
-            return defaultValue;
-        }
         return Long.parseLong(sessionTimeToLive);
     }
 }

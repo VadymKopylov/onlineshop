@@ -1,5 +1,6 @@
 package com.kopylov.onlineshop.dao.jdbc.mapper;
 
+import com.kopylov.onlineshop.entity.Credentials;
 import com.kopylov.onlineshop.entity.User;
 import com.kopylov.onlineshop.entity.UserRole;
 import org.apache.commons.text.StringEscapeUtils;
@@ -13,10 +14,10 @@ public class UserRowMapper {
         String email = StringEscapeUtils.escapeHtml4(resultSet.getString("email"));
         String password = StringEscapeUtils.escapeHtml4(resultSet.getString("password"));
         String salt = StringEscapeUtils.escapeHtml4(resultSet.getString("salt"));
+        Credentials credentials = new Credentials(email,password);
         return User.builder()
                 .role(userRole)
-                .email(email)
-                .password(password)
+                .credentials(credentials)
                 .salt(salt)
                 .build();
     }

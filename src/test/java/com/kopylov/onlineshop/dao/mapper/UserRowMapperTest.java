@@ -25,8 +25,8 @@ class UserRowMapperTest {
         User actual = userRowMapper.mapRow(resultSet);
 
         assertEquals("USER",actual.getRole().toString());
-        assertEquals("example@gmail.com", actual.getEmail());
-        assertEquals("password", actual.getPassword());
+        assertEquals("example@gmail.com", actual.getCredentials().getEmail());
+        assertEquals("password", actual.getCredentials().getPassword());
         assertEquals("salt", actual.getSalt());
     }
 }

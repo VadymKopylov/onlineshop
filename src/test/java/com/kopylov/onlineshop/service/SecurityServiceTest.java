@@ -64,7 +64,7 @@ class SecurityServiceTest {
 
     @Test
     void testGetGuestSessionReturnCorrectSession() {
-        DefaultSession guestSession = securityService.getGuestSession();
+        DefaultSession guestSession = securityService.createGuestSession();
 
         assertNotNull(guestSession);
         assertNull(guestSession.getToken());
@@ -78,14 +78,14 @@ class SecurityServiceTest {
     void testFillUserReturnCorrectFieldsFromCredentials() {
         User expectedUser = User.builder()
                 .role(UserRole.USER)
-                .email("test@gmail.com")
+                .credentials(credentials)
                 .build();
 
         User actualUser = securityService.fillUser(credentials);
 
         assertEquals(expectedUser.getRole(), actualUser.getRole());
-        assertEquals(expectedUser.getEmail(), actualUser.getEmail());
-        assertNotNull(actualUser.getPassword());
+        assertEquals(expectedUser.getCredentials().getEmail(), actualUser.getCredentials().getEmail());
+        assertNotNull(actualUser.getCredentials().getPassword());
         assertNotNull(actualUser.getSalt());
     }
 
@@ -93,8 +93,9 @@ class SecurityServiceTest {
     void testIsPasswordMatchReturnTrueAfterComparePasswords() {
         String salt = "ABCDEFGHIJKLMNOP";
         String hashedPassword = DigestUtils.md5Hex("Password" + salt);
+        Credentials hashedCredentials = new Credentials(credentials.getEmail(),hashedPassword);
         User user = User.builder()
-                .password(hashedPassword)
+                .credentials(hashedCredentials)
                 .salt(salt)
                 .build();
         assertTrue(securityService.isPasswordMatch(user, "Password"));

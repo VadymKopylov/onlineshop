@@ -17,7 +17,7 @@ class WebUtilTest {
     @Test
     void testGetProductReturnCorrectParametersFromRequest() {
         when(mockRequest.getParameter("productName")).thenReturn("Car");
-        when(mockRequest.getParameter("price")).thenReturn(String.valueOf(1500.00));
+        when(mockRequest.getParameter("price")).thenReturn("1500");
 
         Product product = WebUtil.getProduct(mockRequest);
 
@@ -42,9 +42,17 @@ class WebUtilTest {
     }
 
     @Test
+    void testGetProductThrowIllegalArgumentExceptionWhenProductPriceIsEmpty() {
+        when(mockRequest.getParameter("productName")).thenReturn("Car");
+        when(mockRequest.getParameter("price")).thenReturn("");
+
+        assertThrows(IllegalArgumentException.class, () -> WebUtil.getProduct(mockRequest));
+    }
+
+    @Test
     void testGetProductThrowIllegalArgumentExceptionWhenProductPriceEqualsZero() {
         when(mockRequest.getParameter("productName")).thenReturn("Car");
-        when(mockRequest.getParameter("price")).thenReturn(String.valueOf(0));
+        when(mockRequest.getParameter("price")).thenReturn("0");
 
         assertThrows(IllegalArgumentException.class, () -> WebUtil.getProduct(mockRequest));
     }
@@ -63,7 +71,7 @@ class WebUtilTest {
     }
 
     @Test
-    void testUpdateProductByIdThrowIllgarArgumentExceptionWhenIdIsZero() {
+    void testUpdateProductByIdThrowIllegalArgumentExceptionWhenIdIsZero() {
         when(mockRequest.getParameter("id")).thenReturn(String.valueOf(0));
         when(mockRequest.getParameter("productName")).thenReturn("Car");
         when(mockRequest.getParameter("price")).thenReturn(String.valueOf(3500.00));
@@ -72,7 +80,7 @@ class WebUtilTest {
     }
 
     @Test
-    void testUpdateProductByIdThrowIllgarArgumentExceptionWhenProductNameIsEmpty() {
+    void testUpdateProductByIdThrowIllegalArgumentExceptionWhenProductNameIsEmpty() {
         when(mockRequest.getParameter("id")).thenReturn(String.valueOf(1));
         when(mockRequest.getParameter("productName")).thenReturn("");
         when(mockRequest.getParameter("price")).thenReturn(String.valueOf(3500.00));
@@ -81,7 +89,7 @@ class WebUtilTest {
     }
 
     @Test
-    void testUpdateProductByIdThrowIllgarArgumentExceptionWhenProductNameIsNull() {
+    void testUpdateProductByIdThrowIllegalArgumentExceptionWhenProductNameIsNull() {
         when(mockRequest.getParameter("id")).thenReturn(String.valueOf(1));
         when(mockRequest.getParameter("productName")).thenReturn(null);
         when(mockRequest.getParameter("price")).thenReturn(String.valueOf(3500.00));
@@ -90,10 +98,10 @@ class WebUtilTest {
     }
 
     @Test
-    void testUpdateProductByIdThrowIllgarArgumentExceptionWhenPriceIsZero() {
+    void testUpdateProductByIdThrowIllegalArgumentExceptionWhenPriceIsZero() {
         when(mockRequest.getParameter("id")).thenReturn(String.valueOf(1));
         when(mockRequest.getParameter("productName")).thenReturn("Car");
-        when(mockRequest.getParameter("price")).thenReturn(String.valueOf(0));
+        when(mockRequest.getParameter("price")).thenReturn("0");
 
         assertThrows(IllegalArgumentException.class, () -> WebUtil.updateProduct(mockRequest));
     }

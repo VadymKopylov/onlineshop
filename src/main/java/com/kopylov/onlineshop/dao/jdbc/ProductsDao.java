@@ -1,4 +1,4 @@
-package com.kopylov.onlineshop.dao;
+package com.kopylov.onlineshop.dao.jdbc;
 
 import com.kopylov.onlineshop.entity.Product;
 
@@ -6,15 +6,19 @@ import java.util.List;
 
 public interface ProductsDao {
 
-    void addToDataBase(Product product);
-
-    void update(Product product);
+    void add(Product product);
 
     List<Product> findAll();
-
-    void deleteById(int id);
 
     Product findById(int id);
 
     List<Product> findByName(String name);
+
+    void update(Product product);
+
+    void deleteById(int id);
+
+
+
+
 }

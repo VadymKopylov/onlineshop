@@ -1,4 +1,4 @@
-package com.kopylov.onlineshop.dao;
+package com.kopylov.onlineshop.dao.jdbc;
 
 import com.kopylov.onlineshop.entity.User;
 

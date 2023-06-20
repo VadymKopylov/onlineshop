@@ -1,7 +1,6 @@
 package com.kopylov.onlineshop.dao.jdbc;
 
 import com.kopylov.onlineshop.dao.jdbc.mapper.ProductRowMapper;
-import com.kopylov.onlineshop.dao.ProductsDao;
 import com.kopylov.onlineshop.entity.Product;
 import lombok.RequiredArgsConstructor;
 
@@ -33,7 +32,7 @@ public class JdbcProductsDao implements ProductsDao {
             """;
 
     @Override
-    public void addToDataBase(Product product) {
+    public void add(Product product) {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_PRODUCT_SQL)) {
             statement.setString(1, product.getName());
@@ -41,7 +40,6 @@ public class JdbcProductsDao implements ProductsDao {
             statement.setTimestamp(3, Timestamp.valueOf(product.getCreationDate()));
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException("Error with insert Product", e);
         }
     }
@@ -57,23 +55,7 @@ public class JdbcProductsDao implements ProductsDao {
             }
             return products;
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException("Error with select all Product", e);
-        }
-    }
-
-    @Override
-    public void update(Product product) {
-        try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(UPDATE_PRODUCT_SQL)) {
-            statement.setString(1, product.getName());
-            statement.setDouble(2, product.getPrice());
-            statement.setTimestamp(3, Timestamp.valueOf(product.getCreationDate()));
-            statement.setInt(4, product.getId());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error with update Product", e);
         }
     }
 
@@ -89,7 +71,6 @@ public class JdbcProductsDao implements ProductsDao {
                 return new ProductRowMapper().mapRow(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException("Error with select Product by id", e);
         }
     }
@@ -108,8 +89,21 @@ public class JdbcProductsDao implements ProductsDao {
                 return products;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException("Error with select Product by id", e);
+        }
+    }
+
+    @Override
+    public void update(Product product) {
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_PRODUCT_SQL)) {
+            statement.setString(1, product.getName());
+            statement.setDouble(2, product.getPrice());
+            statement.setTimestamp(3, Timestamp.valueOf(product.getCreationDate()));
+            statement.setInt(4, product.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error with update Product", e);
         }
     }
 
@@ -120,7 +114,6 @@ public class JdbcProductsDao implements ProductsDao {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException("Error with delete Product by id", e);
         }
     }

@@ -16,6 +16,8 @@ import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
 public class SecurityService {
+    private final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private final int soleLength = 16;
     private final UserService userService;
     private final long sessionTimeToLive;
     private final Map<String, DefaultSession> sessionsMap = Collections.synchronizedMap(new HashMap<>());
@@ -66,7 +68,7 @@ public class SecurityService {
         return session;
     }
 
-    public DefaultSession getGuestSession() {
+    public DefaultSession createGuestSession() {
         return DefaultSession.builder()
                 .token(null)
                 .expireDate(null)
@@ -79,17 +81,17 @@ public class SecurityService {
     public User fillUser(Credentials credentials) {
         String salt = generateRandomSalt();
         String hashedPassword = DigestUtils.md5Hex(credentials.getPassword() + salt);
+        Credentials hashedCredentials = new Credentials(credentials.getEmail(),hashedPassword);
         return User.builder()
                 .role(UserRole.USER)
-                .email(credentials.getEmail())
-                .password(hashedPassword)
+                .credentials(hashedCredentials)
                 .salt(salt)
                 .build();
     }
 
     public boolean isPasswordMatch(User user, String password) {
         String hashedPassword = DigestUtils.md5Hex(password + user.getSalt());
-        return Objects.equals(hashedPassword, user.getPassword());
+        return Objects.equals(hashedPassword, user.getCredentials().getPassword());
     }
 
     public String assignToken() {
@@ -97,10 +99,8 @@ public class SecurityService {
     }
 
     String generateRandomSalt() {
-        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        final int length = 16;
         SecureRandom random = new SecureRandom();
-        return IntStream.range(0, length)
+        return IntStream.range(0, soleLength)
                 .map(i -> random.nextInt(chars.length()))
                 .mapToObj(randomIndex -> String.valueOf(chars.charAt(randomIndex)))
                 .collect(Collectors.joining());

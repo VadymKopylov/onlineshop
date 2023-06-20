@@ -28,7 +28,7 @@ public class SearchProductServlet extends HttpServlet {
         List<Product> byName = null;
         DefaultSession guestSession = null;
         if (token == null) {
-            guestSession = securityService.getGuestSession();
+            guestSession = securityService.createGuestSession();
 
             searchParameter = request.getParameter("search");
             byName = productService.findByName(searchParameter, request.getParameter("sort"));

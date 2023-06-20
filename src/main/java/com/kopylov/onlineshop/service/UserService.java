@@ -1,6 +1,6 @@
 package com.kopylov.onlineshop.service;
 
-import com.kopylov.onlineshop.dao.UserDao;
+import com.kopylov.onlineshop.dao.jdbc.UserDao;
 import com.kopylov.onlineshop.entity.User;
 import lombok.RequiredArgsConstructor;
 

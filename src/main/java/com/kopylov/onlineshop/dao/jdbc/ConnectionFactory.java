@@ -20,7 +20,6 @@ public class ConnectionFactory {
         try {
             return DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException("Error with connection to db", e);
         }
     }

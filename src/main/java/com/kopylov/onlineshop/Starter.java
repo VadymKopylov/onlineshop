@@ -21,19 +21,44 @@ import java.util.EnumSet;
 import java.util.Properties;
 
 public class Starter {
+
+    private static final int SERVER_PORT = 8081;
+    private static final String PROPERTIES = "application.properties";
+    private static final String SESSION_TIME_KEY = "sessionTimeToLive";
+
     public static void main(String[] args) throws Exception {
-        PropertiesReader propertiesReader = new PropertiesReader("application.properties");
+        PropertiesReader propertiesReader = new PropertiesReader(PROPERTIES);
         Properties properties = propertiesReader.getProperties();
-        long sessionTimeToLive = propertiesReader.getLongProperties("sessionTimeToLive");
+
         ConnectionFactory connectionFactory = new ConnectionFactory(properties);
         JdbcProductsDao jdbcProductsDao = new JdbcProductsDao(connectionFactory);
         JdbcUserDao jdbcUserDao = new JdbcUserDao(connectionFactory);
         UserService userService = new UserService(jdbcUserDao);
+
+        long sessionTimeToLive = propertiesReader.getProperties(SESSION_TIME_KEY);
         SecurityService securityService = new SecurityService(userService, sessionTimeToLive);
+
         ProductService productService = new ProductService(jdbcProductsDao);
         CartService cartService = new CartService(productService);
 
+        Server server = new Server(SERVER_PORT);
+        server.setHandler(createContextServletHandler(securityService, productService, cartService));
+
+        server.start();
+    }
+
+    private static ServletContextHandler createContextServletHandler(
+            SecurityService securityService, ProductService productService, CartService cartService) {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+
+        addServlets(securityService, productService, cartService, context);
+        addFilters(securityService, context);
+
+        return context;
+    }
+
+    private static void addServlets(SecurityService securityService, ProductService productService,
+                                    CartService cartService, ServletContextHandler context) {
 
         context.addServlet(new ServletHolder(new AllRequestsServlet(productService)), "");
         context.addServlet(new ServletHolder(new AdminProductEditServlet(productService)), "/admin");
@@ -46,11 +71,13 @@ public class Starter {
         context.addServlet(new ServletHolder(new CartServlet()), "/product/cart");
         context.addServlet(new ServletHolder(new AddToCartServlet(cartService)), "/product/cart/add");
         context.addServlet(new ServletHolder(new DeleteFromCartServlet(cartService)), "/product/cart/delete");
-        context.addFilter(new FilterHolder(new UserSecurityFilter(securityService)), "/product/*", EnumSet.of(DispatcherType.REQUEST));
-        context.addFilter(new FilterHolder(new AdminSecurityFilter(securityService)), "/admin", EnumSet.of(DispatcherType.REQUEST));
-        Server server = new Server(8081);
-        server.setHandler(context);
+    }
 
-        server.start();
+    private static void addFilters(SecurityService securityService, ServletContextHandler context) {
+
+        context.addFilter(new FilterHolder(new UserSecurityFilter(securityService)),
+                "/product/*", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(new FilterHolder(new AdminSecurityFilter(securityService)),
+                "/admin", EnumSet.of(DispatcherType.REQUEST));
     }
 }

@@ -1,6 +1,5 @@
 package com.kopylov.onlineshop.dao.jdbc;
 
-import com.kopylov.onlineshop.dao.UserDao;
 import com.kopylov.onlineshop.dao.jdbc.mapper.UserRowMapper;
 import com.kopylov.onlineshop.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +25,11 @@ public class JdbcUserDao implements UserDao {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SAVE_USER_SQL)) {
             statement.setString(1, String.valueOf(user.getRole()));
-            statement.setString(2, user.getEmail());
-            statement.setString(3, user.getPassword());
+            statement.setString(2, user.getCredentials().getEmail());
+            statement.setString(3, user.getCredentials().getPassword());
             statement.setString(4, user.getSalt());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException("Error with insert User", e);
         }
     }
@@ -49,7 +47,6 @@ public class JdbcUserDao implements UserDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException("Error with select User by email", e);
         }
     }
@@ -68,7 +65,6 @@ public class JdbcUserDao implements UserDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException("Error with select User by email", e);
         }
         return userExists;

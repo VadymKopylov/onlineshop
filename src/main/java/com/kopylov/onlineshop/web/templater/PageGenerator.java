@@ -14,7 +14,6 @@ import freemarker.cache.ClassTemplateLoader;
 public class PageGenerator {
     private static final String TEMPLATE_DIR = "/templates";
 
-    private static PageGenerator pageGenerator;
     private final Configuration configuration;
 
     private PageGenerator() {
@@ -23,9 +22,7 @@ public class PageGenerator {
     }
 
     public static PageGenerator instance() {
-        if (pageGenerator == null)
-            pageGenerator = new PageGenerator();
-        return pageGenerator;
+        return new PageGenerator();
     }
 
     public String getPage(String filename) {

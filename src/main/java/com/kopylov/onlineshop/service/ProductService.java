@@ -1,6 +1,6 @@
 package com.kopylov.onlineshop.service;
 
-import com.kopylov.onlineshop.dao.ProductsDao;
+import com.kopylov.onlineshop.dao.jdbc.ProductsDao;
 import com.kopylov.onlineshop.entity.Product;
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +26,7 @@ public class ProductService {
 
     public void addToDataBase(Product product) {
         product.setCreationDate(LocalDateTime.now());
-        productsDao.addToDataBase(product);
+        productsDao.add(product);
     }
 
     public void deleteById(int id) {
@@ -61,21 +61,21 @@ public class ProductService {
         return products;
     }
 
-    private List<Product> sortByCriteria(List<Product> products, String value) {
-        if (value == null || value.equals("name")) {
-            return products.stream()
-                    .sorted(Comparator.comparing(Product::getName))
-                    .collect(Collectors.toList());
-        } else if (value.equals("price")) {
-            return products.stream()
-                    .sorted(Comparator.comparing(Product::getPrice))
-                    .collect(Collectors.toList());
-        } else if (value.equals("date")) {
-            return products.stream()
-                    .sorted(Comparator.comparing(Product::getCreationDate))
-                    .collect(Collectors.toList());
+    private List<Product> sortByCriteria(List<Product> products, String criteria) {
+        if (criteria == null || criteria.equals("name")) {
+            return sorted(products, Comparator.comparing(Product::getName));
+        } else if (criteria.equals("price")) {
+            return sorted(products, Comparator.comparing(Product::getPrice));
+        } else if (criteria.equals("date")) {
+            return sorted(products, Comparator.comparing(Product::getCreationDate));
         } else {
-            throw new IllegalArgumentException("Invalid sort parameter: " + value);
+            throw new IllegalArgumentException("Invalid sort parameter: " + criteria);
         }
+    }
+
+    private static List<Product> sorted(List<Product> products, Comparator<Product> comparator) {
+        return products.stream()
+                .sorted(comparator)
+                .collect(Collectors.toList());
     }
 }

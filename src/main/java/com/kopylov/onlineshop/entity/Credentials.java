@@ -1,9 +1,9 @@
 package com.kopylov.onlineshop.entity;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Data
+@Getter
 @RequiredArgsConstructor
 public class Credentials {
     private final String email;

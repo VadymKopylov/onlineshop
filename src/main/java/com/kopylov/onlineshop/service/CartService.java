@@ -10,9 +10,9 @@ public class CartService {
     private final ProductService productService;
 
     public void addToCart(List<Product> cart, int id) {
-        Product byId = productService.findById(id);
-        byId.setId(cart.size());
-        cart.add(byId);
+        Product product = productService.findById(id);
+        product.setId(cart.size());
+        cart.add(product);
     }
 
     public void deleteFromCart(List<Product> cart, int id) {

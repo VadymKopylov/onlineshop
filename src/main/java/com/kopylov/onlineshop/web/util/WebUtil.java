@@ -8,36 +8,36 @@ import jakarta.servlet.http.HttpServletRequest;
 public class WebUtil {
     public static Product getProduct(HttpServletRequest request) {
         String productName = request.getParameter("productName");
-        double productPrice = Double.parseDouble(request.getParameter("price"));
-        if (productName == null || productName.isEmpty() || productPrice <= 0) {
-            throw new IllegalArgumentException("Invalid product details");
-        }
+        String productPrice = request.getParameter("price");
+
+        Validator.validateProductDetails(productName, productPrice);
+
         return Product.builder()
                 .name(productName)
-                .price(productPrice)
+                .price(Double.parseDouble(productPrice))
                 .build();
     }
 
     public static Product updateProduct(HttpServletRequest request) {
-        int id = Integer.parseInt(request.getParameter("id"));
+        String id = request.getParameter("id");
         String productName = request.getParameter("productName");
-        double productPrice = Double.parseDouble(request.getParameter("price"));
-        if (id <= 0 || productName == null || productName.isEmpty() || productPrice <= 0) {
-            throw new IllegalArgumentException("Invalid product details");
-        }
+        String productPrice = request.getParameter("price");
+
+        Validator.validateProductUpdate(id, productName, productPrice);
+
         return Product.builder()
-                .id(id)
+                .id(Integer.parseInt(id))
                 .name(productName)
-                .price(productPrice)
+                .price(Double.parseDouble(productPrice))
                 .build();
     }
 
     public static Credentials getCredentials(HttpServletRequest request) {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
-            throw new IllegalArgumentException("Email and password are required");
-        }
+
+        Validator.validateCredentials(email, password);
+
         return new Credentials(email, password);
     }
 

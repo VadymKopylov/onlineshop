@@ -16,12 +16,7 @@ public class ProductService {
     private final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
     public Product findById(int id) {
-        Product byId = productsDao.findById(id);
-        if (byId != null) {
-            return byId;
-        } else {
-            throw new IllegalArgumentException();
-        }
+        return productsDao.findById(id);
     }
 
     public void addToDataBase(Product product) {
@@ -30,11 +25,7 @@ public class ProductService {
     }
 
     public void deleteById(int id) {
-        if (productsDao.findById(id) != null) {
             productsDao.deleteById(id);
-        } else {
-            throw new IllegalArgumentException();
-        }
     }
 
     public void update(Product product) {

@@ -49,6 +49,7 @@ public class Starter {
 
     private static ServletContextHandler createContextServletHandler(
             SecurityService securityService, ProductService productService, CartService cartService) {
+
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
         addServlets(securityService, productService, cartService, context);

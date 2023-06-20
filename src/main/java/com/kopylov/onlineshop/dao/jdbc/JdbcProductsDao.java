@@ -49,6 +49,9 @@ public class JdbcProductsDao implements ProductsDao {
         try (Connection connection = connectionFactory.getConnection();
              ResultSet resultSet = connection.createStatement().executeQuery(SELECT_ALL_PRODUCTS_SQL)) {
             List<Product> products = new ArrayList<>();
+            if (!resultSet.next()) {
+                return null;
+            }
             while (resultSet.next()) {
                 Product product = new ProductRowMapper().mapRow(resultSet);
                 products.add(product);
@@ -66,7 +69,7 @@ public class JdbcProductsDao implements ProductsDao {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (!resultSet.next()) {
-                    throw new RuntimeException("Product with id: " + id + " not found");
+                    return null;
                 }
                 return new ProductRowMapper().mapRow(resultSet);
             }
@@ -82,6 +85,9 @@ public class JdbcProductsDao implements ProductsDao {
             statement.setString(1, name);
             try (ResultSet resultSet = statement.executeQuery()) {
                 List<Product> products = new ArrayList<>();
+                if (!resultSet.next()) {
+                    return null;
+                }
                 while (resultSet.next()) {
                     Product product = new ProductRowMapper().mapRow(resultSet);
                     products.add(product);

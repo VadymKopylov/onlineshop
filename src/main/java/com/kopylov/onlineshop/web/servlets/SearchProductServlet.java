@@ -39,7 +39,9 @@ public class SearchProductServlet extends HttpServlet {
                 byName = productService.findByName(searchParameter, request.getParameter("sort"));
             }
         }
-
+        if(byName == null){
+            response.sendRedirect("");
+        }
         Map<String, Object> products = new HashMap<>();
         products.put("Products", byName);
         response.getWriter().println(PageGenerator.instance().getPage("allProduct.html", products));

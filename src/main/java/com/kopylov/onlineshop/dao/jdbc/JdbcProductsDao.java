@@ -49,12 +49,12 @@ public class JdbcProductsDao implements ProductsDao {
         try (Connection connection = connectionFactory.getConnection();
              ResultSet resultSet = connection.createStatement().executeQuery(SELECT_ALL_PRODUCTS_SQL)) {
             List<Product> products = new ArrayList<>();
-            if (!resultSet.next()) {
-                return null;
-            }
             while (resultSet.next()) {
                 Product product = new ProductRowMapper().mapRow(resultSet);
                 products.add(product);
+            }
+            if(products.isEmpty()){
+                return null;
             }
             return products;
         } catch (SQLException e) {
@@ -85,12 +85,12 @@ public class JdbcProductsDao implements ProductsDao {
             statement.setString(1, name);
             try (ResultSet resultSet = statement.executeQuery()) {
                 List<Product> products = new ArrayList<>();
-                if (!resultSet.next()) {
-                    return null;
-                }
                 while (resultSet.next()) {
                     Product product = new ProductRowMapper().mapRow(resultSet);
                     products.add(product);
+                }
+                if (products.isEmpty()) {
+                    return null;
                 }
                 return products;
             }

@@ -35,11 +35,17 @@ public class ProductService {
 
     public List<Product> findAll(String value) {
         List<Product> allProducts = productsDao.findAll();
+        if(allProducts == null){
+            return null;
+        }
         return sortByCriteria(setFormattedTime(allProducts), value);
     }
 
     public List<Product> findByName(String name, String value) {
         List<Product> productByName = productsDao.findByName(name);
+        if(productByName == null){
+            return null;
+        }
         return sortByCriteria(setFormattedTime(productByName), value);
     }
 

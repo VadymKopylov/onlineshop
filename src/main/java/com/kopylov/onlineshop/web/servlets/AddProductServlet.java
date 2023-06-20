@@ -22,7 +22,6 @@ public class AddProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         productService.addToDataBase(WebUtil.getProduct(request));
-        request.setAttribute("message", "Product was added");
-        response.sendRedirect("/admin?message=success");
+        response.sendRedirect("/admin");
     }
 }

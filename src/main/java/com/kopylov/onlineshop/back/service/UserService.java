@@ -1,7 +1,7 @@
-package com.kopylov.onlineshop.service;
+package com.kopylov.onlineshop.back.service;
 
 import com.kopylov.onlineshop.dao.jdbc.UserDao;
-import com.kopylov.onlineshop.entity.User;
+import com.kopylov.onlineshop.back.entity.User;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

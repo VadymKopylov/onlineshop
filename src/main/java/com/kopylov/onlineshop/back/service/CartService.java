@@ -1,6 +1,6 @@
-package com.kopylov.onlineshop.service;
+package com.kopylov.onlineshop.back.service;
 
-import com.kopylov.onlineshop.entity.Product;
+import com.kopylov.onlineshop.back.entity.Product;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.kopylov.onlineshop.entity;
+package com.kopylov.onlineshop.back.entity;
 
 import lombok.Builder;
 import lombok.Data;

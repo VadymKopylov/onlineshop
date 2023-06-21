@@ -1,8 +1,8 @@
 package com.kopylov.onlineshop.web.security;
 
-import com.kopylov.onlineshop.entity.User;
-import com.kopylov.onlineshop.entity.UserRole;
-import com.kopylov.onlineshop.service.SecurityService;
+import com.kopylov.onlineshop.back.entity.User;
+import com.kopylov.onlineshop.back.entity.UserRole;
+import com.kopylov.onlineshop.back.service.SecurityService;
 import com.kopylov.onlineshop.web.util.DefaultSession;
 import jakarta.servlet.*;
 import jakarta.servlet.http.Cookie;

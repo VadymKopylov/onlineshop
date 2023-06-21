@@ -1,4 +1,4 @@
-package com.kopylov.onlineshop.web.templater;
+package com.kopylov.onlineshop.web.util;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;

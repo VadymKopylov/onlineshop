@@ -1,7 +1,7 @@
 package com.kopylov.onlineshop.dao.jdbc;
 
 import com.kopylov.onlineshop.dao.jdbc.mapper.UserRowMapper;
-import com.kopylov.onlineshop.entity.User;
+import com.kopylov.onlineshop.back.entity.User;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.*;
@@ -30,7 +30,7 @@ public class JdbcUserDao implements UserDao {
             statement.setString(4, user.getSalt());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error with insert User", e);
+            throw new RuntimeException("Exception with insert User", e);
         }
     }
 
@@ -47,7 +47,7 @@ public class JdbcUserDao implements UserDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error with select User by email", e);
+            throw new RuntimeException("Exception with select User by email", e);
         }
     }
 
@@ -65,7 +65,7 @@ public class JdbcUserDao implements UserDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error with select User by email", e);
+            throw new RuntimeException("Exception with select User by email", e);
         }
         return userExists;
     }

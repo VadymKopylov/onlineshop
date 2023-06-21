@@ -2,7 +2,7 @@ package com.kopylov.onlineshop.dao.product;
 
 import com.kopylov.onlineshop.dao.jdbc.ConnectionFactory;
 import com.kopylov.onlineshop.dao.jdbc.JdbcProductsDao;
-import com.kopylov.onlineshop.entity.Product;
+import com.kopylov.onlineshop.back.entity.Product;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

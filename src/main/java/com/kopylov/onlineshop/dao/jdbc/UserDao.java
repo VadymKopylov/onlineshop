@@ -1,6 +1,6 @@
 package com.kopylov.onlineshop.dao.jdbc;
 
-import com.kopylov.onlineshop.entity.User;
+import com.kopylov.onlineshop.back.entity.User;
 
 public interface UserDao {
 

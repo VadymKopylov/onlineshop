@@ -1,4 +1,4 @@
-package com.kopylov.onlineshop.util;
+package com.kopylov.onlineshop.back.util;
 
 import lombok.Setter;
 

@@ -4,7 +4,18 @@
 
     <groupId>com.kopylov</groupId>
     <artifactId>onlineshop</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
+
+    <properties>
+        <commons-text.version>1.10.0</commons-text.version>
+        <commons-codec.version>1.15</commons-codec.version>
+        <lombok.version>1.18.28</lombok.version>
+        <postgresql.version>42.5.4</postgresql.version>
+        <jetty.version>11.0.14</jetty.version>
+        <freemarker.version>2.3.31</freemarker.version>
+        <junit-jupiter.version>5.9.2</junit-jupiter.version>
+        <mockito-core.version>5.3.0</mockito-core.version>
+    </properties>
 
     <build>
         <plugins>
@@ -24,49 +35,49 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
-            <version>1.10.0</version>
+            <version>${commons-text.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.15</version>
+            <version>${commons-codec.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.28</version>
-            <scope>provided</scope>
+            <scope>${lombok.version}</scope>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.5.4</version>
+            <version>${postgresql.version}</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
-            <version>11.0.14</version>
+            <version>${jetty.version}</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
-            <version>11.0.14</version>
+            <version>${jetty.version}</version>
         </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
-            <version>2.3.31</version>
+            <version>${freemarker.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.9.2</version>
+            <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.3.0</version>
+            <version>${mockito-core.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -1,6 +1,6 @@
 package com.kopylov.onlineshop.web.servlets;
 
-import com.kopylov.onlineshop.service.ProductService;
+import com.kopylov.onlineshop.back.service.ProductService;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

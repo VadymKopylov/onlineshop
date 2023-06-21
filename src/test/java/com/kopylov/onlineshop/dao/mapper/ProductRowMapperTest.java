@@ -1,7 +1,7 @@
 package com.kopylov.onlineshop.dao.mapper;
 
 import com.kopylov.onlineshop.dao.jdbc.mapper.ProductRowMapper;
-import com.kopylov.onlineshop.entity.Product;
+import com.kopylov.onlineshop.back.entity.Product;
 import org.junit.jupiter.api.Test;
 
 import java.sql.ResultSet;

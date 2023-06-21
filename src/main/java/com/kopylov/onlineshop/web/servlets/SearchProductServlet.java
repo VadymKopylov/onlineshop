@@ -1,9 +1,9 @@
 package com.kopylov.onlineshop.web.servlets;
 
-import com.kopylov.onlineshop.entity.Product;
-import com.kopylov.onlineshop.service.ProductService;
-import com.kopylov.onlineshop.service.SecurityService;
-import com.kopylov.onlineshop.web.templater.PageGenerator;
+import com.kopylov.onlineshop.back.entity.Product;
+import com.kopylov.onlineshop.back.service.ProductService;
+import com.kopylov.onlineshop.back.service.SecurityService;
+import com.kopylov.onlineshop.web.util.PageGenerator;
 import com.kopylov.onlineshop.web.util.DefaultSession;
 import com.kopylov.onlineshop.web.util.WebUtil;
 import jakarta.servlet.http.HttpServlet;

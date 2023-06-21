@@ -1,12 +1,13 @@
 package com.kopylov.onlineshop.service;
 
-import com.kopylov.onlineshop.entity.Credentials;
-import com.kopylov.onlineshop.entity.User;
-import com.kopylov.onlineshop.entity.UserRole;
+import com.kopylov.onlineshop.back.entity.Credentials;
+import com.kopylov.onlineshop.back.entity.User;
+import com.kopylov.onlineshop.back.entity.UserRole;
+import com.kopylov.onlineshop.back.service.SecurityService;
+import com.kopylov.onlineshop.back.service.UserService;
 import com.kopylov.onlineshop.web.util.DefaultSession;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.Test;
-
 
 import java.util.*;
 
@@ -93,19 +94,21 @@ class SecurityServiceTest {
     void testIsPasswordMatchReturnTrueAfterComparePasswords() {
         String salt = "ABCDEFGHIJKLMNOP";
         String hashedPassword = DigestUtils.md5Hex("Password" + salt);
-        Credentials hashedCredentials = new Credentials(credentials.getEmail(),hashedPassword);
+        Credentials hashedCredentials = new Credentials(credentials.getEmail(), hashedPassword);
         User user = User.builder()
                 .credentials(hashedCredentials)
                 .salt(salt)
                 .build();
         assertTrue(securityService.isPasswordMatch(user, "Password"));
     }
+
     @Test
     void testAssignTokenReturnNotNull() {
         String token = securityService.assignToken();
 
         assertNotNull(token);
     }
+
     @Test
     void testGenerateRandomSaltReturnNoyNullSaltAndCorrectSaltLength() {
         String salt = securityService.generateRandomSalt();

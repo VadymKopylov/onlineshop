@@ -1,7 +1,7 @@
 package com.kopylov.onlineshop.web.util;
 
-import com.kopylov.onlineshop.entity.Product;
-import com.kopylov.onlineshop.entity.User;
+import com.kopylov.onlineshop.back.entity.Product;
+import com.kopylov.onlineshop.back.entity.User;
 import lombok.Builder;
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package com.kopylov.onlineshop.dao.jdbc;
 
 import com.kopylov.onlineshop.dao.jdbc.mapper.ProductRowMapper;
-import com.kopylov.onlineshop.entity.Product;
+import com.kopylov.onlineshop.back.entity.Product;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.*;
@@ -11,6 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JdbcProductsDao implements ProductsDao {
     private final ConnectionFactory connectionFactory;
+    private final ProductRowMapper productRowMapper = new ProductRowMapper();
 
     private static final String SELECT_PRODUCT_BY_NAME_SQL = """
             SELECT * FROM products WHERE name LIKE ?
@@ -40,7 +41,7 @@ public class JdbcProductsDao implements ProductsDao {
             statement.setTimestamp(3, Timestamp.valueOf(product.getCreationDate()));
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error with insert Product", e);
+            throw new RuntimeException("Exception with insert Product", e);
         }
     }
 
@@ -50,15 +51,15 @@ public class JdbcProductsDao implements ProductsDao {
              ResultSet resultSet = connection.createStatement().executeQuery(SELECT_ALL_PRODUCTS_SQL)) {
             List<Product> products = new ArrayList<>();
             while (resultSet.next()) {
-                Product product = new ProductRowMapper().mapRow(resultSet);
+                Product product = productRowMapper.mapRow(resultSet);
                 products.add(product);
             }
-            if(products.isEmpty()){
+            if (products.isEmpty()) {
                 return null;
             }
             return products;
         } catch (SQLException e) {
-            throw new RuntimeException("Error with select all Product", e);
+            throw new RuntimeException("Exception with select all Product", e);
         }
     }
 
@@ -71,7 +72,7 @@ public class JdbcProductsDao implements ProductsDao {
                 if (!resultSet.next()) {
                     return null;
                 }
-                return new ProductRowMapper().mapRow(resultSet);
+                return productRowMapper.mapRow(resultSet);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error with select Product by id", e);
@@ -86,16 +87,13 @@ public class JdbcProductsDao implements ProductsDao {
             try (ResultSet resultSet = statement.executeQuery()) {
                 List<Product> products = new ArrayList<>();
                 while (resultSet.next()) {
-                    Product product = new ProductRowMapper().mapRow(resultSet);
+                    Product product = productRowMapper.mapRow(resultSet);
                     products.add(product);
-                }
-                if (products.isEmpty()) {
-                    return null;
                 }
                 return products;
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error with select Product by id", e);
+            throw new RuntimeException("Exception with select Product by id", e);
         }
     }
 
@@ -109,7 +107,7 @@ public class JdbcProductsDao implements ProductsDao {
             statement.setInt(4, product.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error with update Product", e);
+            throw new RuntimeException("Exception with update Product", e);
         }
     }
 
@@ -120,7 +118,7 @@ public class JdbcProductsDao implements ProductsDao {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error with delete Product by id", e);
+            throw new RuntimeException("Exception with delete Product by id", e);
         }
     }
 }

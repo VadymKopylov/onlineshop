@@ -1,7 +1,7 @@
 package com.kopylov.onlineshop.web.util;
 
-import com.kopylov.onlineshop.entity.Credentials;
-import com.kopylov.onlineshop.entity.Product;
+import com.kopylov.onlineshop.back.entity.Credentials;
+import com.kopylov.onlineshop.back.entity.Product;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;

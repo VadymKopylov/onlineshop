@@ -1,7 +1,7 @@
-package com.kopylov.onlineshop.service;
+package com.kopylov.onlineshop.back.service;
 
 import com.kopylov.onlineshop.dao.jdbc.ProductsDao;
-import com.kopylov.onlineshop.entity.Product;
+import com.kopylov.onlineshop.back.entity.Product;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -43,7 +43,7 @@ public class ProductService {
 
     public List<Product> findByName(String name, String value) {
         List<Product> productByName = productsDao.findByName(name);
-        if(productByName == null){
+        if(productByName.isEmpty()){
             return null;
         }
         return sortByCriteria(setFormattedTime(productByName), value);

@@ -1,9 +1,9 @@
-package com.kopylov.onlineshop.service;
+package com.kopylov.onlineshop.back.service;
 
-import com.kopylov.onlineshop.entity.Credentials;
-import com.kopylov.onlineshop.entity.Product;
-import com.kopylov.onlineshop.entity.User;
-import com.kopylov.onlineshop.entity.UserRole;
+import com.kopylov.onlineshop.back.entity.User;
+import com.kopylov.onlineshop.back.entity.Credentials;
+import com.kopylov.onlineshop.back.entity.Product;
+import com.kopylov.onlineshop.back.entity.UserRole;
 import com.kopylov.onlineshop.web.util.DefaultSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -22,7 +22,6 @@ public class SecurityService {
     private final long sessionTimeToLive;
     private final Map<String, DefaultSession> sessionsMap = Collections.synchronizedMap(new HashMap<>());
 
-    //We don't use registration, so the user is filled in from the credentials
     public DefaultSession login(Credentials credentials) {
         if (!userService.isExist(credentials.getEmail())) {
             User user = fillUser(credentials);
@@ -98,7 +97,7 @@ public class SecurityService {
         return UUID.randomUUID().toString();
     }
 
-    String generateRandomSalt() {
+    public String generateRandomSalt() {
         SecureRandom random = new SecureRandom();
         return IntStream.range(0, soleLength)
                 .map(i -> random.nextInt(chars.length()))
@@ -107,7 +106,7 @@ public class SecurityService {
     }
 
     //Create for Test only
-    Map<String, DefaultSession> getSessionsMap() {
+    public Map<String, DefaultSession> getSessionsMap() {
         return sessionsMap;
     }
 }

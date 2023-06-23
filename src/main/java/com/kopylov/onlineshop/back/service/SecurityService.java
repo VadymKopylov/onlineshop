@@ -1,9 +1,6 @@
 package com.kopylov.onlineshop.back.service;
 
-import com.kopylov.onlineshop.back.entity.User;
-import com.kopylov.onlineshop.back.entity.Credentials;
-import com.kopylov.onlineshop.back.entity.Product;
-import com.kopylov.onlineshop.back.entity.UserRole;
+import com.kopylov.onlineshop.back.entity.*;
 import com.kopylov.onlineshop.web.util.DefaultSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -43,7 +40,7 @@ public class SecurityService {
     public DefaultSession createSession(User user) {
         String token = assignToken();
         LocalDateTime expireDate = LocalDateTime.now().plusMinutes(sessionTimeToLive);
-        List<Product> cart = new ArrayList<>();
+        List<ProductDto> cart = new ArrayList<>();
         DefaultSession session = DefaultSession.builder()
                 .token(token)
                 .expireDate(expireDate)

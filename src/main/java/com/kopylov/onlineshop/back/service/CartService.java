@@ -1,6 +1,6 @@
 package com.kopylov.onlineshop.back.service;
 
-import com.kopylov.onlineshop.back.entity.Product;
+import com.kopylov.onlineshop.back.entity.ProductDto;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -9,13 +9,15 @@ import java.util.List;
 public class CartService {
     private final ProductService productService;
 
-    public void addToCart(List<Product> cart, int id) {
-        Product product = productService.findById(id);
-        product.setId(cart.size());
-        cart.add(product);
+    public void addToCart(List<ProductDto> cart, int id) {
+        ProductDto productDto = productService.findById(id);
+        cart.add(productDto);
     }
 
-    public void deleteFromCart(List<Product> cart, int id) {
-        cart.remove(id);
+    public void deleteFromCart(List<ProductDto> cart, int id) {
+        cart.removeIf(productDto -> productDto.getId() == id);
     }
 }
+
+
+

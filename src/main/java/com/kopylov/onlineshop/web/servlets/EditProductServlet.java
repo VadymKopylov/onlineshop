@@ -1,6 +1,6 @@
 package com.kopylov.onlineshop.web.servlets;
 
-import com.kopylov.onlineshop.back.entity.Product;
+import com.kopylov.onlineshop.back.entity.ProductDto;
 import com.kopylov.onlineshop.back.service.ProductService;
 import com.kopylov.onlineshop.web.util.PageGenerator;
 import com.kopylov.onlineshop.web.util.WebUtil;
@@ -20,7 +20,7 @@ public class EditProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int productId = Integer.parseInt(request.getParameter("id"));
-        Product productById = productService.findById(productId);
+        ProductDto productById = productService.findById(productId);
         Map<String, Object> productToChange = new HashMap<>();
         productToChange.put("Product", productById);
         response.getWriter().println(PageGenerator.instance().getPage("editProductPage.html", productToChange));

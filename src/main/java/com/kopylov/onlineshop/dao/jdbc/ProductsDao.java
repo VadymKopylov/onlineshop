@@ -19,6 +19,4 @@ public interface ProductsDao {
     void deleteById(int id);
 
 
-
-
 }

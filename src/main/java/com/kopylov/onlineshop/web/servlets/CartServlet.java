@@ -1,6 +1,6 @@
 package com.kopylov.onlineshop.web.servlets;
 
-import com.kopylov.onlineshop.back.entity.Product;
+import com.kopylov.onlineshop.back.entity.ProductDto;
 import com.kopylov.onlineshop.web.util.PageGenerator;
 import com.kopylov.onlineshop.web.util.DefaultSession;
 import jakarta.servlet.http.HttpServlet;
@@ -16,7 +16,7 @@ public class CartServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         DefaultSession session = (DefaultSession) request.getAttribute("session");
-        List<Product> cart = session.getCart();
+        List<ProductDto> cart = session.getCart();
 
         Map<String, Object> products = new HashMap<>();
         products.put("Products", cart);

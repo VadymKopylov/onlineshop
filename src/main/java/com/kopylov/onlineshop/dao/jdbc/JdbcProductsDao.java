@@ -93,7 +93,7 @@ public class JdbcProductsDao implements ProductsDao {
                 return products;
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Exception with select Product by id", e);
+            throw new RuntimeException("Exception with select Product by name", e);
         }
     }
 

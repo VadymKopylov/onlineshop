@@ -1,6 +1,6 @@
 package com.kopylov.onlineshop.web.servlets;
 
-import com.kopylov.onlineshop.back.entity.Product;
+import com.kopylov.onlineshop.back.entity.ProductDto;
 import com.kopylov.onlineshop.back.service.ProductService;
 import com.kopylov.onlineshop.web.util.PageGenerator;
 import jakarta.servlet.http.HttpServlet;
@@ -18,7 +18,7 @@ public class AllRequestsServlet extends HttpServlet {
     private final ProductService productService;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<Product> allProducts = productService.findAll(request.getParameter("sort"));
+        List<ProductDto> allProducts = productService.findAll(request.getParameter("sort"));
         Map<String, Object> products = new HashMap<>();
         products.put("Products", allProducts);
         response.getWriter().println(PageGenerator.instance().getPage("allProduct.html", products));

@@ -1,6 +1,6 @@
 package com.kopylov.onlineshop.web.servlets;
 
-import com.kopylov.onlineshop.back.entity.Product;
+import com.kopylov.onlineshop.back.entity.ProductDto;
 import com.kopylov.onlineshop.back.service.ProductService;
 import com.kopylov.onlineshop.back.service.SecurityService;
 import com.kopylov.onlineshop.web.util.PageGenerator;
@@ -25,11 +25,10 @@ public class SearchProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String token = WebUtil.getToken(request);
         String searchParameter;
-        List<Product> byName = null;
+        List<ProductDto> byName = null;
         DefaultSession guestSession = null;
         if (token == null) {
             guestSession = securityService.createGuestSession();
-
             searchParameter = request.getParameter("search");
             byName = productService.findByName(searchParameter, request.getParameter("sort"));
             guestSession.setAttribute(searchParameter);

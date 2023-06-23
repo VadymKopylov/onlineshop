@@ -1,6 +1,6 @@
 package com.kopylov.onlineshop.web.util;
 
-import com.kopylov.onlineshop.back.entity.Product;
+import com.kopylov.onlineshop.back.entity.ProductDto;
 import com.kopylov.onlineshop.back.entity.User;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +14,6 @@ public class DefaultSession {
     private String token;
     private LocalDateTime expireDate;
     private User user;
-    private List<Product> cart;
+    private List<ProductDto> cart;
     private String attribute;
 }

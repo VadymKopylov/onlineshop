@@ -16,15 +16,13 @@ public class Validator {
     }
 
     public static void validateProductUpdate(String id, String productName, String price) {
-        if (!NumberUtils.isParsable(id)) {
-            throw new IllegalArgumentException("Invalid product details: id must be a number");
-        } else if (Integer.parseInt(id) <= 0) {
-            throw new IllegalArgumentException("Invalid product details: id cannot be less than or equal to 0");
+        if (StringUtils.isBlank(id)) {
+            throw new IllegalArgumentException("Invalid product details: id doesn't exist");
         } else if (StringUtils.isBlank(productName)) {
             throw new IllegalArgumentException("Invalid product details: productName");
         } else if (!NumberUtils.isParsable(price)) {
             throw new IllegalArgumentException("Invalid product details: price");
-        }else if (Double.parseDouble(price) <= 0) {
+        } else if (Double.parseDouble(price) <= 0) {
             throw new IllegalArgumentException("Invalid product details: price cannot be less than or equal to 0");
         }
     }

@@ -6,16 +6,16 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class WebUtil {
+
     public static Product getProduct(HttpServletRequest request) {
         String productName = request.getParameter("productName");
         String productPrice = request.getParameter("price");
 
         Validator.validateProductDetails(productName, productPrice);
 
-        return Product.builder()
-                .name(productName)
-                .price(Double.parseDouble(productPrice))
-                .build();
+        return new Product()
+                .setName(productName)
+                .setPrice(Double.parseDouble(productPrice));
     }
 
     public static Product updateProduct(HttpServletRequest request) {
@@ -25,11 +25,10 @@ public class WebUtil {
 
         Validator.validateProductUpdate(id, productName, productPrice);
 
-        return Product.builder()
-                .id(Integer.parseInt(id))
-                .name(productName)
-                .price(Double.parseDouble(productPrice))
-                .build();
+        return new Product()
+                .setId(id)
+                .setName(productName)
+                .setPrice(Double.parseDouble(productPrice));
     }
 
     public static Credentials getCredentials(HttpServletRequest request) {

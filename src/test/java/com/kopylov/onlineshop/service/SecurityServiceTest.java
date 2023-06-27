@@ -77,10 +77,9 @@ class SecurityServiceTest {
 
     @Test
     void testFillUserReturnCorrectFieldsFromCredentials() {
-        User expectedUser = User.builder()
-                .role(UserRole.USER)
-                .credentials(credentials)
-                .build();
+        User expectedUser = new User()
+                .setRole(UserRole.USER)
+                .setCredentials(credentials);
 
         User actualUser = securityService.fillUser(credentials);
 
@@ -95,10 +94,9 @@ class SecurityServiceTest {
         String salt = "ABCDEFGHIJKLMNOP";
         String hashedPassword = DigestUtils.md5Hex("Password" + salt);
         Credentials hashedCredentials = new Credentials(credentials.getEmail(), hashedPassword);
-        User user = User.builder()
-                .credentials(hashedCredentials)
-                .salt(salt)
-                .build();
+        User user = new User()
+                .setCredentials(hashedCredentials)
+                .setSalt(salt);
         assertTrue(securityService.isPasswordMatch(user, "Password"));
     }
 

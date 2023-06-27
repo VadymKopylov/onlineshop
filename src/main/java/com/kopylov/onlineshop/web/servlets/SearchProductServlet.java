@@ -3,8 +3,8 @@ package com.kopylov.onlineshop.web.servlets;
 import com.kopylov.onlineshop.back.entity.ProductDto;
 import com.kopylov.onlineshop.back.service.ProductService;
 import com.kopylov.onlineshop.back.service.SecurityService;
-import com.kopylov.onlineshop.web.util.PageGenerator;
 import com.kopylov.onlineshop.web.util.DefaultSession;
+import com.kopylov.onlineshop.web.util.PageGenerator;
 import com.kopylov.onlineshop.web.util.WebUtil;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +18,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 public class SearchProductServlet extends HttpServlet {
+
     private final ProductService productService;
     private final SecurityService securityService;
 
@@ -38,7 +39,7 @@ public class SearchProductServlet extends HttpServlet {
                 byName = productService.findByName(searchParameter, request.getParameter("sort"));
             }
         }
-        if(byName == null){
+        if (byName == null) {
             response.sendRedirect("");
         }
         Map<String, Object> products = new HashMap<>();

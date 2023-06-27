@@ -1,13 +1,17 @@
 package com.kopylov.onlineshop.dao.jdbc;
 
-import com.kopylov.onlineshop.dao.jdbc.mapper.UserRowMapper;
 import com.kopylov.onlineshop.back.entity.User;
+import com.kopylov.onlineshop.dao.jdbc.mapper.UserRowMapper;
 import lombok.RequiredArgsConstructor;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @RequiredArgsConstructor
 public class JdbcUserDao implements UserDao {
+
     private final ConnectionFactory connectionFactory;
 
     private static final String SAVE_USER_SQL = """

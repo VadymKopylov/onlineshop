@@ -15,11 +15,12 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 public class EditProductServlet extends HttpServlet {
+
     private final ProductService productService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int productId = Integer.parseInt(request.getParameter("id"));
+        String productId = request.getParameter("id");
         ProductDto productById = productService.findById(productId);
         Map<String, Object> productToChange = new HashMap<>();
         productToChange.put("Product", productById);

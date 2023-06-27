@@ -13,6 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class DeleteFromCartServlet extends HttpServlet {
+
     private final CartService cartService;
 
     @Override
@@ -20,7 +21,7 @@ public class DeleteFromCartServlet extends HttpServlet {
         DefaultSession session = (DefaultSession) request.getAttribute("session");
         List<ProductDto> cart = session.getCart();
 
-        cartService.deleteFromCart(cart, Integer.parseInt(request.getParameter("id")));
+        cartService.deleteFromCart(cart, request.getParameter("id"));
         response.sendRedirect("/product/cart");
     }
 }

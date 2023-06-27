@@ -8,6 +8,7 @@ import java.util.Properties;
 
 @Setter
 public class PropertiesReader {
+
     private final String path;
     private Properties properties;
 

@@ -1,6 +1,9 @@
 package com.kopylov.onlineshop.back.service;
 
-import com.kopylov.onlineshop.back.entity.*;
+import com.kopylov.onlineshop.back.entity.Credentials;
+import com.kopylov.onlineshop.back.entity.ProductDto;
+import com.kopylov.onlineshop.back.entity.User;
+import com.kopylov.onlineshop.back.entity.UserRole;
 import com.kopylov.onlineshop.web.util.DefaultSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -13,6 +16,7 @@ import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
 public class SecurityService {
+
     private final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private final int soleLength = 16;
     private final UserService userService;
@@ -77,12 +81,11 @@ public class SecurityService {
     public User fillUser(Credentials credentials) {
         String salt = generateRandomSalt();
         String hashedPassword = DigestUtils.md5Hex(credentials.getPassword() + salt);
-        Credentials hashedCredentials = new Credentials(credentials.getEmail(),hashedPassword);
-        return User.builder()
-                .role(UserRole.USER)
-                .credentials(hashedCredentials)
-                .salt(salt)
-                .build();
+        Credentials hashedCredentials = new Credentials(credentials.getEmail(), hashedPassword);
+        return new User()
+                .setRole(UserRole.USER)
+                .setCredentials(hashedCredentials)
+                .setSalt(salt);
     }
 
     public boolean isPasswordMatch(User user, String password) {

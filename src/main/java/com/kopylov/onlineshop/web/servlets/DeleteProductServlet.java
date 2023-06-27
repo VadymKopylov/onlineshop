@@ -10,11 +10,12 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 public class DeleteProductServlet extends HttpServlet {
+
     private final ProductService productService;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int productId = Integer.parseInt(request.getParameter("id"));
+        String productId = request.getParameter("id");
         productService.deleteById(productId);
         response.sendRedirect("/admin");
     }

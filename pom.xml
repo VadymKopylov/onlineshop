@@ -7,12 +7,16 @@
     <version>1.0.4</version>
 
     <properties>
+        <jetty-maven-plugin.version>11.0.15</jetty-maven-plugin.version>
+        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+        <java.version>17</java.version>
         <commons-text.version>1.10.0</commons-text.version>
         <commons-codec.version>1.15</commons-codec.version>
         <lombok.version>1.18.28</lombok.version>
         <postgresql.version>42.5.4</postgresql.version>
         <jetty.version>11.0.14</jetty.version>
         <freemarker.version>2.3.31</freemarker.version>
+        <logback-classic.version>1.4.7</logback-classic.version>
         <junit-jupiter.version>5.9.2</junit-jupiter.version>
         <mockito-core.version>5.3.0</mockito-core.version>
     </properties>
@@ -20,12 +24,16 @@
     <build>
         <plugins>
             <plugin>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>${jetty-maven-plugin.version}</version>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -55,13 +63,19 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
+            <artifactId>jetty-servlet</artifactId>
             <version>${jetty.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-webapp</artifactId>
-            <version>${jetty.version}</version>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-classic.version}</version>
         </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>

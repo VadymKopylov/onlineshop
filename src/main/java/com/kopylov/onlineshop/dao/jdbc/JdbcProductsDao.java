@@ -1,29 +1,26 @@
 package com.kopylov.onlineshop.dao.jdbc;
 
-import com.kopylov.onlineshop.dao.jdbc.mapper.ProductRowMapper;
 import com.kopylov.onlineshop.back.entity.Product;
+import com.kopylov.onlineshop.dao.jdbc.mapper.ProductRowMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JdbcProductsDao implements ProductsDao {
+
     private final ConnectionFactory connectionFactory;
     private final ProductRowMapper productRowMapper = new ProductRowMapper();
 
-    private static final String SELECT_PRODUCT_BY_NAME_SQL = """
-            SELECT * FROM products WHERE name LIKE ?
-            """;
     private static final String INSERT_PRODUCT_SQL = """
-            INSERT INTO products (name, price, creation_date) VALUES (?, ?, ?)
+            INSERT INTO products (id, name, price, creation_date) VALUES (?, ?, ?, ?)
             """;
     private static final String UPDATE_PRODUCT_SQL = """
             UPDATE products SET name = ?, price = ?, creation_date = ? WHERE id = ?;
-            """;
-    private static final String SELECT_PRODUCT_SQL = """
-            SELECT id, name, price, creation_date FROM products WHERE id = ?;
             """;
     private static final String DELETE_PRODUCT_SQL = """
             DELETE FROM products WHERE id = ?;
@@ -34,12 +31,15 @@ public class JdbcProductsDao implements ProductsDao {
 
     @Override
     public void add(Product product) {
+        log.debug("Connecting to db");
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_PRODUCT_SQL)) {
-            statement.setString(1, product.getName());
-            statement.setDouble(2, product.getPrice());
-            statement.setTimestamp(3, Timestamp.valueOf(product.getCreationDate()));
+            statement.setString(1, product.getId());
+            statement.setString(2, product.getName());
+            statement.setDouble(3, product.getPrice());
+            statement.setTimestamp(4, Timestamp.valueOf(product.getCreationDate()));
             statement.executeUpdate();
+            log.debug("Product was added: [name={}]", product.getName());
         } catch (SQLException e) {
             throw new RuntimeException("Exception with insert Product", e);
         }
@@ -47,6 +47,7 @@ public class JdbcProductsDao implements ProductsDao {
 
     @Override
     public List<Product> findAll() {
+        log.debug("Connecting to db");
         try (Connection connection = connectionFactory.getConnection();
              ResultSet resultSet = connection.createStatement().executeQuery(SELECT_ALL_PRODUCTS_SQL)) {
             List<Product> products = new ArrayList<>();
@@ -54,69 +55,38 @@ public class JdbcProductsDao implements ProductsDao {
                 Product product = productRowMapper.mapRow(resultSet);
                 products.add(product);
             }
-            if (products.isEmpty()) {
-                return null;
-            }
+            log.debug("Found products. [size={}]", products.size());
             return products;
         } catch (SQLException e) {
+            log.error("Exception while finding all products. [sql={}]", SELECT_ALL_PRODUCTS_SQL);
             throw new RuntimeException("Exception with select all Product", e);
         }
     }
 
     @Override
-    public Product findById(int id) {
-        try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_PRODUCT_SQL)) {
-            statement.setInt(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (!resultSet.next()) {
-                    return null;
-                }
-                return productRowMapper.mapRow(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error with select Product by id", e);
-        }
-    }
-
-    @Override
-    public List<Product> findByName(String name) {
-        try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_PRODUCT_BY_NAME_SQL)) {
-            statement.setString(1, name);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                List<Product> products = new ArrayList<>();
-                while (resultSet.next()) {
-                    Product product = productRowMapper.mapRow(resultSet);
-                    products.add(product);
-                }
-                return products;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Exception with select Product by name", e);
-        }
-    }
-
-    @Override
     public void update(Product product) {
+        log.debug("Connecting to db");
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_PRODUCT_SQL)) {
             statement.setString(1, product.getName());
             statement.setDouble(2, product.getPrice());
             statement.setTimestamp(3, Timestamp.valueOf(product.getCreationDate()));
-            statement.setInt(4, product.getId());
+            statement.setString(4, product.getId());
             statement.executeUpdate();
+            log.debug("Product was updated successfully. [name={}]", product.getName());
         } catch (SQLException e) {
             throw new RuntimeException("Exception with update Product", e);
         }
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(String id) {
+        log.debug("Connecting to db");
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_PRODUCT_SQL)) {
-            statement.setInt(1, id);
+            statement.setString(1, id);
             statement.executeUpdate();
+            log.debug("Product was deleted successfully. [id={}]", id);
         } catch (SQLException e) {
             throw new RuntimeException("Exception with delete Product by id", e);
         }

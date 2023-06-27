@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 @Getter
 @Accessors(chain = true)
 public class ProductDto {
-    private int id;
+
+    private String id;
     private String name;
     private double price;
     private LocalDateTime creationDate;

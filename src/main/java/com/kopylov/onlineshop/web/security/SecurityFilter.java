@@ -14,6 +14,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 public abstract class SecurityFilter implements Filter {
+
     private final SecurityService securityService;
 
     @Override

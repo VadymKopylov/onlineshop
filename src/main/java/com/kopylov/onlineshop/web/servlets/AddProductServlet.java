@@ -12,6 +12,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 public class AddProductServlet extends HttpServlet {
+
     private final ProductService productService;
 
     @Override

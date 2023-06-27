@@ -13,6 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class AddToCartServlet extends HttpServlet {
+
     private final CartService cartService;
 
     @Override
@@ -20,7 +21,7 @@ public class AddToCartServlet extends HttpServlet {
         DefaultSession session = (DefaultSession) request.getAttribute("session");
         List<ProductDto> cart = session.getCart();
 
-        cartService.addToCart(cart, Integer.parseInt(request.getParameter("id")));
+        cartService.addToCart(cart, request.getParameter("id"));
         response.sendRedirect("/");
     }
 }

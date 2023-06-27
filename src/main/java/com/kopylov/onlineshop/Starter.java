@@ -1,21 +1,24 @@
 package com.kopylov.onlineshop;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import com.kopylov.onlineshop.back.service.CartService;
+import com.kopylov.onlineshop.back.service.ProductService;
+import com.kopylov.onlineshop.back.service.SecurityService;
+import com.kopylov.onlineshop.back.service.UserService;
+import com.kopylov.onlineshop.back.util.PropertiesReader;
 import com.kopylov.onlineshop.dao.jdbc.ConnectionFactory;
 import com.kopylov.onlineshop.dao.jdbc.JdbcProductsDao;
 import com.kopylov.onlineshop.dao.jdbc.JdbcUserDao;
-import com.kopylov.onlineshop.back.service.CartService;
-import com.kopylov.onlineshop.back.service.ProductService;
-import com.kopylov.onlineshop.back.service.UserService;
-import com.kopylov.onlineshop.back.util.PropertiesReader;
 import com.kopylov.onlineshop.web.security.AdminSecurityFilter;
 import com.kopylov.onlineshop.web.security.UserSecurityFilter;
-import com.kopylov.onlineshop.back.service.SecurityService;
 import com.kopylov.onlineshop.web.servlets.*;
 import jakarta.servlet.DispatcherType;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.slf4j.LoggerFactory;
 
 import java.util.EnumSet;
 import java.util.Properties;
@@ -27,6 +30,7 @@ public class Starter {
     private static final String SESSION_TIME_KEY = "sessionTimeToLive";
 
     public static void main(String[] args) throws Exception {
+
         PropertiesReader propertiesReader = new PropertiesReader(PROPERTIES);
         Properties properties = propertiesReader.getProperties();
 
@@ -39,10 +43,14 @@ public class Starter {
         SecurityService securityService = new SecurityService(userService, sessionTimeToLive);
 
         ProductService productService = new ProductService(jdbcProductsDao);
+        productService.initializeCache();
         CartService cartService = new CartService(productService);
 
         Server server = new Server(SERVER_PORT);
         server.setHandler(createContextServletHandler(securityService, productService, cartService));
+
+        Logger rootLogger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+        rootLogger.setLevel(Level.INFO);
 
         server.start();
     }
@@ -79,6 +87,6 @@ public class Starter {
         context.addFilter(new FilterHolder(new UserSecurityFilter(securityService)),
                 "/product/*", EnumSet.of(DispatcherType.REQUEST));
         context.addFilter(new FilterHolder(new AdminSecurityFilter(securityService)),
-                "/admin", EnumSet.of(DispatcherType.REQUEST));
+                "/admin/*", EnumSet.of(DispatcherType.REQUEST));
     }
 }

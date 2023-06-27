@@ -1,17 +1,18 @@
 package com.kopylov.onlineshop.back.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
-@Data
-@Builder
-@AllArgsConstructor
+@Setter
+@Getter
+@Accessors(chain = true)
 public class Product {
-    private int id;
-    private final String name;
-    private final double price;
+
+    private String id;
+    private String name;
+    private double price;
     private LocalDateTime creationDate;
 }

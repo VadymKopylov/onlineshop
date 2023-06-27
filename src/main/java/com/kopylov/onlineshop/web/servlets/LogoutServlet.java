@@ -11,6 +11,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 public class LogoutServlet extends HttpServlet {
+
     private final SecurityService securityService;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

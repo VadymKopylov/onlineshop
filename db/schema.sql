@@ -1,5 +1,5 @@
 CREATE TABLE Products (
-id SERIAL PRIMARY KEY,
+id VARCHAR(50),
 name VARCHAR(20),
 price NUMERIC(10,2),
 creation_date TIMESTAMP

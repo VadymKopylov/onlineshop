@@ -18,6 +18,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.flywaydb.core.Flyway;
 import org.slf4j.LoggerFactory;
 
 import java.util.EnumSet;
@@ -30,7 +31,6 @@ public class Starter {
     private static final String SESSION_TIME_KEY = "sessionTimeToLive";
 
     public static void main(String[] args) throws Exception {
-
         PropertiesReader propertiesReader = new PropertiesReader(PROPERTIES);
         Properties properties = propertiesReader.getProperties();
 
@@ -38,6 +38,12 @@ public class Starter {
         JdbcProductsDao jdbcProductsDao = new JdbcProductsDao(connectionFactory);
         JdbcUserDao jdbcUserDao = new JdbcUserDao(connectionFactory);
         UserService userService = new UserService(jdbcUserDao);
+
+        Flyway flyway = Flyway.configure().dataSource(connectionFactory.getUrl(),
+                        connectionFactory.getUser(), connectionFactory.getPassword())
+                        .load();
+                        flyway.baseline();
+                        flyway.migrate();
 
         long sessionTimeToLive = propertiesReader.getProperties(SESSION_TIME_KEY);
         SecurityService securityService = new SecurityService(userService, sessionTimeToLive);

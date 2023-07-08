@@ -4,16 +4,18 @@
 
     <groupId>com.kopylov</groupId>
     <artifactId>onlineshop</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 
     <properties>
         <jetty-maven-plugin.version>11.0.15</jetty-maven-plugin.version>
-        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <java.version>17</java.version>
+        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
         <commons-text.version>1.10.0</commons-text.version>
         <commons-codec.version>1.15</commons-codec.version>
         <lombok.version>1.18.28</lombok.version>
         <postgresql.version>42.5.4</postgresql.version>
+        <flyway-core.version>9.20.0</flyway-core.version>
         <jetty.version>11.0.14</jetty.version>
         <freemarker.version>2.3.31</freemarker.version>
         <logback-classic.version>1.4.7</logback-classic.version>
@@ -24,17 +26,34 @@
     <build>
         <plugins>
             <plugin>
-                    <groupId>org.eclipse.jetty</groupId>
-                    <artifactId>jetty-maven-plugin</artifactId>
-                    <version>${jetty-maven-plugin.version}</version>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.kopylov.onlineshop.Starter</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -53,8 +72,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.28</version>
-            <scope>${lombok.version}</scope>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -62,8 +81,13 @@
             <version>${postgresql.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${flyway-core.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-servlet</artifactId>
+            <artifactId>jetty-webapp</artifactId>
             <version>${jetty.version}</version>
             <exclusions>
                 <exclusion>

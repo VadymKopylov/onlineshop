@@ -65,14 +65,14 @@ class WebUtilTest {
 
         Product product = WebUtil.updateProduct(mockRequest);
 
-        assertEquals(1, product.getId());
+        assertEquals("1", product.getId());
         assertEquals("Car", product.getName());
         assertEquals(3500.00, product.getPrice());
     }
 
     @Test
-    void testUpdateProductByIdThrowIllegalArgumentExceptionWhenIdIsZero() {
-        when(mockRequest.getParameter("id")).thenReturn(String.valueOf(0));
+    void testUpdateProductByIdThrowIllegalArgumentExceptionWhenIdDoesntExist() {
+        when(mockRequest.getParameter("id")).thenReturn(" ");
         when(mockRequest.getParameter("productName")).thenReturn("Car");
         when(mockRequest.getParameter("price")).thenReturn(String.valueOf(3500.00));
 

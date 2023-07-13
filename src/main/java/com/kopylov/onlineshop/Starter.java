@@ -42,7 +42,6 @@ public class Starter {
         Flyway flyway = Flyway.configure().dataSource(connectionFactory.getUrl(),
                         connectionFactory.getUser(), connectionFactory.getPassword())
                         .load();
-                        flyway.baseline();
                         flyway.migrate();
 
         long sessionTimeToLive = propertiesReader.getProperties(SESSION_TIME_KEY);

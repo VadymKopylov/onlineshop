@@ -15,7 +15,7 @@ class JdbcProductsDaoITest {
     @Test
     void testFindAllReturnCorrectData() {
         Properties properties = new Properties();
-        properties.setProperty("url","jdbc:postgresql://localhost:5432/shopdatabase");
+        properties.setProperty("url","jdbc:postgresql://35.180.41.213:5432/shopdatabase");
         properties.setProperty("login","postgres");
         properties.setProperty("password","mysecretpassword");
         ConnectionFactory connectionFactory = new ConnectionFactory(properties);
@@ -23,7 +23,7 @@ class JdbcProductsDaoITest {
         List<Product> products = jdbcProductsDao.findAll();
         assertFalse(products.isEmpty());
         for (Product product : products) {
-            assertNotEquals(0, product.getId());
+            assertNotEquals(" ", product.getId());
             assertNotEquals(0, product.getPrice());
             assertNotNull(product.getName());
             assertNotNull(product.getCreationDate());

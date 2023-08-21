@@ -6,6 +6,8 @@ import com.kopylov.onlineshop.web.util.PageGenerator;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
@@ -13,10 +15,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class AdminProductEditServlet extends HttpServlet {
 
-    private final ProductService productService;
+    private ProductService productService;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         List<ProductDto> allProducts = productService.findAll(request.getParameter("sort"));

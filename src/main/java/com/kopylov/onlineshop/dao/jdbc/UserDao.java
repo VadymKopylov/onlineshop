@@ -4,7 +4,7 @@ import com.kopylov.onlineshop.back.entity.User;
 
 public interface UserDao {
 
-    void addToDataBase(User user);
+    void add(User user);
 
     User findByEmail(String user);
 

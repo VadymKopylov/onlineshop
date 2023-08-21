@@ -1,14 +1,17 @@
 package com.kopylov.onlineshop.back.service;
 
 import com.kopylov.onlineshop.back.entity.ProductDto;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class CartService {
 
-    private final ProductService productService;
+    private ProductService productService;
 
     public void addToCart(List<ProductDto> cart, String id) {
         ProductDto productDto = productService.findById(id);

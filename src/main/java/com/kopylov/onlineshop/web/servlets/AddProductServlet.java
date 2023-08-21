@@ -6,14 +6,16 @@ import com.kopylov.onlineshop.web.util.WebUtil;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class AddProductServlet extends HttpServlet {
 
-    private final ProductService productService;
+    private ProductService productService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

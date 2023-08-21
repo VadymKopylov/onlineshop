@@ -7,16 +7,19 @@ import com.kopylov.onlineshop.web.util.WebUtil;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class EditProductServlet extends HttpServlet {
 
-    private final ProductService productService;
+    private ProductService productService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

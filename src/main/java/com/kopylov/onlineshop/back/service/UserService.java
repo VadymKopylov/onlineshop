@@ -2,19 +2,21 @@ package com.kopylov.onlineshop.back.service;
 
 import com.kopylov.onlineshop.back.entity.User;
 import com.kopylov.onlineshop.dao.jdbc.UserDao;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserService {
 
-    private final UserDao userDao;
+    private  UserDao userDao;
 
     public boolean isExist(String email) {
         return userDao.isExist(email);
     }
 
-    public void addToDataBase(User user) {
-        userDao.addToDataBase(user);
+    public void save(User user) {
+        userDao.add(user);
     }
 
     public User findByEmail(String email) {

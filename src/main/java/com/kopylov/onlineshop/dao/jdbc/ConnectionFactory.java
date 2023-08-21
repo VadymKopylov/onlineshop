@@ -1,27 +1,26 @@
 package com.kopylov.onlineshop.dao.jdbc;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
-@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Slf4j
-public class ConnectionFactory {
+public abstract class ConnectionFactory implements DataSource {
 
-    private final String url;
-    private final String user;
-    private final String password;
+    private String url = null;
+    private String user = null;
+    private String password = null;
 
-    public ConnectionFactory(Properties properties) {
-        this.url = properties.getProperty("url");
-        this.user = properties.getProperty("login");
-        this.password = properties.getProperty("password");
-    }
-
+    @Override
     public Connection getConnection() {
         try {
             Connection connection = DriverManager.getConnection(url, user, password);

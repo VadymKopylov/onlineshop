@@ -9,18 +9,20 @@ import com.kopylov.onlineshop.web.util.WebUtil;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class SearchProductServlet extends HttpServlet {
 
-    private final ProductService productService;
-    private final SecurityService securityService;
+    private ProductService productService;
+    private SecurityService securityService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

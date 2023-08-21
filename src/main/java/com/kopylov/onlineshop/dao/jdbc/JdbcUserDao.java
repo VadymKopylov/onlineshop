@@ -2,17 +2,21 @@ package com.kopylov.onlineshop.dao.jdbc;
 
 import com.kopylov.onlineshop.back.entity.User;
 import com.kopylov.onlineshop.dao.jdbc.mapper.UserRowMapper;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class JdbcUserDao implements UserDao {
 
-    private final ConnectionFactory connectionFactory;
+    private DataSource dataSource;
 
     private static final String SAVE_USER_SQL = """
             INSERT INTO users (role_name,email,password,salt) VALUES (?, ?, ?, ?)
@@ -25,8 +29,8 @@ public class JdbcUserDao implements UserDao {
             """;
 
     @Override
-    public void addToDataBase(User user) {
-        try (Connection connection = connectionFactory.getConnection();
+    public void add(User user) {
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(SAVE_USER_SQL)) {
             statement.setString(1, String.valueOf(user.getRole()));
             statement.setString(2, user.getCredentials().getEmail());
@@ -40,7 +44,7 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public User findByEmail(String email) {
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_USER_SQL)) {
             statement.setString(1, email);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -57,7 +61,7 @@ public class JdbcUserDao implements UserDao {
 
     public boolean isExist(String email) {
         boolean userExists = false;
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_USER_EXIST_SQL)) {
             statement.setString(1, email);
             try (ResultSet resultSet = statement.executeQuery()) {

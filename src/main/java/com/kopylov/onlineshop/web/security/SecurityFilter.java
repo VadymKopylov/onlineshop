@@ -8,14 +8,17 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class SecurityFilter implements Filter {
 
-    private final SecurityService securityService;
+    private SecurityService securityService;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans>
+
+    <bean id="addProductServlet" class="com.kopylov.onlineshop.web.servlets.AddProductServlet">
+        <property name="productService" ref="productService"/>
+    </bean>
+
+    <bean id="addToCartServlet" class="com.kopylov.onlineshop.web.servlets.AddToCartServlet">
+        <property name="cartService" ref="cartService"/>
+    </bean>
+
+    <bean id="adminProductEditServlet" class="com.kopylov.onlineshop.web.servlets.AdminProductEditServlet">
+        <property name="productService" ref="productService"/>
+    </bean>
+
+    <bean id="allRequestsServlet" class="com.kopylov.onlineshop.web.servlets.AllRequestsServlet">
+        <property name="productService" ref="productService"/>
+    </bean>
+
+    <bean id="cartServlet" class="com.kopylov.onlineshop.web.servlets.CartServlet"/>
+
+    <bean id="deleteFromCartServlet" class="com.kopylov.onlineshop.web.servlets.DeleteFromCartServlet">
+        <property name="cartService" ref="cartService"/>
+    </bean>
+
+    <bean id="deleteProductServlet" class="com.kopylov.onlineshop.web.servlets.DeleteProductServlet">
+        <property name="productService" ref="productService"/>
+    </bean>
+
+    <bean id="editProductServlet" class="com.kopylov.onlineshop.web.servlets.EditProductServlet">
+        <property name="productService" ref="productService"/>
+    </bean>
+
+    <bean id="loginServlet" class="com.kopylov.onlineshop.web.servlets.LoginServlet">
+        <property name="securityService" ref="securityService"/>
+    </bean>
+
+    <bean id="logoutServlet" class="com.kopylov.onlineshop.web.servlets.LogoutServlet">
+        <property name="securityService" ref="securityService"/>
+    </bean>
+
+    <bean id="searchProductServlet" class="com.kopylov.onlineshop.web.servlets.SearchProductServlet">
+        <property name="productService" ref="productService"/>
+        <property name="securityService" ref="securityService"/>
+    </bean>
+
+</beans>

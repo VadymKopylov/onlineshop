@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans>
+
+    <bean id="productService" class="com.kopylov.onlineshop.back.service.ProductService">
+        <property name="productsDao" ref="productsDao"/>
+    </bean>
+
+    <bean id="cartService" class="com.kopylov.onlineshop.back.service.CartService">
+        <property name="productService" ref="productService"/>
+    </bean>
+
+    <bean id="userService" class="com.kopylov.onlineshop.back.service.UserService">
+        <property name="userDao" ref="userDao"/>
+    </bean>
+
+    <bean id="securityService" class="com.kopylov.onlineshop.back.service.SecurityService">
+        <property name="userService" ref="userService"/>
+    </bean>
+
+</beans>

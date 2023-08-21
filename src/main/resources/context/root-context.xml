@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans>
+
+    <import resource="dao-context.xml"/>
+    <import resource="service-context.xml"/>
+    <import resource="servlet-context.xml"/>
+
+</beans>

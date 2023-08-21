@@ -2,18 +2,22 @@ package com.kopylov.onlineshop.dao.jdbc;
 
 import com.kopylov.onlineshop.back.entity.Product;
 import com.kopylov.onlineshop.dao.jdbc.mapper.ProductRowMapper;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.dbcp2.BasicDataSource;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class JdbcProductsDao implements ProductsDao {
 
-    private final ConnectionFactory connectionFactory;
+    private DataSource dataSource;
     private final ProductRowMapper productRowMapper = new ProductRowMapper();
 
     private static final String INSERT_PRODUCT_SQL = """
@@ -32,7 +36,7 @@ public class JdbcProductsDao implements ProductsDao {
     @Override
     public void add(Product product) {
         log.debug("Connecting to db");
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_PRODUCT_SQL)) {
             statement.setString(1, product.getId());
             statement.setString(2, product.getName());
@@ -48,7 +52,7 @@ public class JdbcProductsDao implements ProductsDao {
     @Override
     public List<Product> findAll() {
         log.debug("Connecting to db");
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              ResultSet resultSet = connection.createStatement().executeQuery(SELECT_ALL_PRODUCTS_SQL)) {
             List<Product> products = new ArrayList<>();
             while (resultSet.next()) {
@@ -66,7 +70,7 @@ public class JdbcProductsDao implements ProductsDao {
     @Override
     public void update(Product product) {
         log.debug("Connecting to db");
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_PRODUCT_SQL)) {
             statement.setString(1, product.getName());
             statement.setDouble(2, product.getPrice());
@@ -82,7 +86,7 @@ public class JdbcProductsDao implements ProductsDao {
     @Override
     public void deleteById(String id) {
         log.debug("Connecting to db");
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_PRODUCT_SQL)) {
             statement.setString(1, id);
             statement.executeUpdate();

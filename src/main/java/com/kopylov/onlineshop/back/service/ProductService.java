@@ -3,7 +3,7 @@ package com.kopylov.onlineshop.back.service;
 import com.kopylov.onlineshop.back.entity.Product;
 import com.kopylov.onlineshop.back.entity.ProductDto;
 import com.kopylov.onlineshop.dao.jdbc.ProductsDao;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,10 +11,11 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductService {
 
-    private final ProductsDao productsDao;
+    private  ProductsDao productsDao;
     private final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     private Map<String, ProductDto> productsCache;
 

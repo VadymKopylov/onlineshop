@@ -6,6 +6,8 @@ import com.kopylov.onlineshop.web.util.PageGenerator;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,10 +19,11 @@ import java.util.Map;
 import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 @Slf4j
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class AllRequestsServlet extends HttpServlet {
 
-    private final ProductService productService;
+    private ProductService productService;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {

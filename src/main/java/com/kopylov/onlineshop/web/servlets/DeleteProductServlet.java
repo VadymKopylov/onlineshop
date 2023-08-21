@@ -4,14 +4,17 @@ import com.kopylov.onlineshop.back.service.ProductService;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeleteProductServlet extends HttpServlet {
 
-    private final ProductService productService;
+    private ProductService productService;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

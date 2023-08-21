@@ -6,15 +6,17 @@ import com.kopylov.onlineshop.web.util.DefaultSession;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.util.List;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeleteFromCartServlet extends HttpServlet {
 
-    private final CartService cartService;
+    private CartService cartService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

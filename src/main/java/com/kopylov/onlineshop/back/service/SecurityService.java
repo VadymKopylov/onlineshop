@@ -5,7 +5,8 @@ import com.kopylov.onlineshop.back.entity.ProductDto;
 import com.kopylov.onlineshop.back.entity.User;
 import com.kopylov.onlineshop.back.entity.UserRole;
 import com.kopylov.onlineshop.web.util.DefaultSession;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.security.SecureRandom;
@@ -14,25 +15,26 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class SecurityService {
 
     private final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private final int soleLength = 16;
-    private final UserService userService;
-    private final long sessionTimeToLive;
+    private UserService userService;
+    private long sessionTimeToLive;
     private final Map<String, DefaultSession> sessionsMap = Collections.synchronizedMap(new HashMap<>());
 
     public DefaultSession login(Credentials credentials) {
-        if (!userService.isExist(credentials.getEmail())) {
-            User user = fillUser(credentials);
-            userService.addToDataBase(user);
-            return createSession(user);
-        } else {
-            User user = userService.findByEmail(credentials.getEmail());
+        User user = userService.findByEmail(credentials.getEmail());
+        if (user != null) {
             if (isPasswordMatch(user, credentials.getPassword())) {
                 return createSession(user);
             }
+        } else {
+            user = fillUser(credentials);
+            userService.save(user);
+            return createSession(user);
         }
         return null;
     }
@@ -108,5 +110,9 @@ public class SecurityService {
     //Create for Test only
     public Map<String, DefaultSession> getSessionsMap() {
         return sessionsMap;
+    }
+
+    public void setSessionTimeToLive(long sessionTimeToLive) {
+        this.sessionTimeToLive = sessionTimeToLive;
     }
 }

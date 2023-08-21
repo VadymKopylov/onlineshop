@@ -2,27 +2,24 @@ package com.kopylov.onlineshop;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
-import com.kopylov.onlineshop.back.service.CartService;
-import com.kopylov.onlineshop.back.service.ProductService;
+import com.kopylov.ioc.context.ApplicationContext;
+import com.kopylov.ioc.context.ClassPathApplicationContext;
 import com.kopylov.onlineshop.back.service.SecurityService;
-import com.kopylov.onlineshop.back.service.UserService;
 import com.kopylov.onlineshop.back.util.PropertiesReader;
-import com.kopylov.onlineshop.dao.jdbc.ConnectionFactory;
-import com.kopylov.onlineshop.dao.jdbc.JdbcProductsDao;
-import com.kopylov.onlineshop.dao.jdbc.JdbcUserDao;
 import com.kopylov.onlineshop.web.security.AdminSecurityFilter;
 import com.kopylov.onlineshop.web.security.UserSecurityFilter;
 import com.kopylov.onlineshop.web.servlets.*;
 import jakarta.servlet.DispatcherType;
+import jakarta.servlet.http.HttpServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.flywaydb.core.Flyway;
 import org.slf4j.LoggerFactory;
 
 import java.util.EnumSet;
-import java.util.Properties;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Starter {
 
@@ -32,27 +29,13 @@ public class Starter {
 
     public static void main(String[] args) throws Exception {
         PropertiesReader propertiesReader = new PropertiesReader(PROPERTIES);
-        Properties properties = propertiesReader.getProperties();
+        ApplicationContext applicationContext = new ClassPathApplicationContext("/context/root-context.xml");
 
-        ConnectionFactory connectionFactory = new ConnectionFactory(properties);
-        JdbcProductsDao jdbcProductsDao = new JdbcProductsDao(connectionFactory);
-        JdbcUserDao jdbcUserDao = new JdbcUserDao(connectionFactory);
-        UserService userService = new UserService(jdbcUserDao);
-
-        Flyway flyway = Flyway.configure().dataSource(connectionFactory.getUrl(),
-                        connectionFactory.getUser(), connectionFactory.getPassword())
-                        .load();
-                        flyway.migrate();
-
+        SecurityService securityService = (SecurityService) applicationContext.getBean("securityService");
         long sessionTimeToLive = propertiesReader.getProperties(SESSION_TIME_KEY);
-        SecurityService securityService = new SecurityService(userService, sessionTimeToLive);
-
-        ProductService productService = new ProductService(jdbcProductsDao);
-        productService.initializeCache();
-        CartService cartService = new CartService(productService);
-
+        securityService.setSessionTimeToLive(sessionTimeToLive);
         Server server = new Server(SERVER_PORT);
-        server.setHandler(createContextServletHandler(securityService, productService, cartService));
+        server.setHandler(createContextServletHandler(applicationContext));
 
         Logger rootLogger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
         rootLogger.setLevel(Level.INFO);
@@ -60,38 +43,33 @@ public class Starter {
         server.start();
     }
 
-    private static ServletContextHandler createContextServletHandler(
-            SecurityService securityService, ProductService productService, CartService cartService) {
-
+    private static ServletContextHandler createContextServletHandler(ApplicationContext applicationContext) {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-
-        addServlets(securityService, productService, cartService, context);
-        addFilters(securityService, context);
+        addServlets(applicationContext, context);
+        addFilters(applicationContext, context);
 
         return context;
     }
 
-    private static void addServlets(SecurityService securityService, ProductService productService,
-                                    CartService cartService, ServletContextHandler context) {
-
-        context.addServlet(new ServletHolder(new AllRequestsServlet(productService)), "");
-        context.addServlet(new ServletHolder(new AdminProductEditServlet(productService)), "/admin");
-        context.addServlet(new ServletHolder(new AddProductServlet(productService)), "/admin/product/add");
-        context.addServlet(new ServletHolder(new EditProductServlet(productService)), "/admin/product/edit");
-        context.addServlet(new ServletHolder(new DeleteProductServlet(productService)), "/admin/product/delete");
-        context.addServlet(new ServletHolder(new LoginServlet(securityService)), "/login");
-        context.addServlet(new ServletHolder(new LogoutServlet(securityService)), "/logout");
-        context.addServlet(new ServletHolder(new SearchProductServlet(productService, securityService)), "/search");
-        context.addServlet(new ServletHolder(new CartServlet()), "/product/cart");
-        context.addServlet(new ServletHolder(new AddToCartServlet(cartService)), "/product/cart/add");
-        context.addServlet(new ServletHolder(new DeleteFromCartServlet(cartService)), "/product/cart/delete");
+    private static void addServlets(ApplicationContext applicationContext, ServletContextHandler context) {
+        context.addServlet(new ServletHolder(applicationContext.getBean(AllRequestsServlet.class)), "");
+        context.addServlet(new ServletHolder(applicationContext.getBean(AdminProductEditServlet.class)), "/admin");
+        context.addServlet(new ServletHolder(applicationContext.getBean(AddProductServlet.class)), "/admin/product/add");
+        context.addServlet(new ServletHolder(applicationContext.getBean(EditProductServlet.class)), "/admin/product/edit");
+        context.addServlet(new ServletHolder(applicationContext.getBean(DeleteProductServlet.class)), "/admin/product/delete");
+        context.addServlet(new ServletHolder(applicationContext.getBean(LoginServlet.class)), "/login");
+        context.addServlet(new ServletHolder(applicationContext.getBean(LogoutServlet.class)), "/logout");
+        context.addServlet(new ServletHolder(applicationContext.getBean(SearchProductServlet.class)), "/search");
+        context.addServlet(new ServletHolder(applicationContext.getBean(CartServlet.class)), "/product/cart");
+        context.addServlet(new ServletHolder(applicationContext.getBean(AddToCartServlet.class)), "/product/cart/add");
+        context.addServlet(new ServletHolder(applicationContext.getBean(DeleteFromCartServlet.class)), "/product/cart/delete");
     }
 
-    private static void addFilters(SecurityService securityService, ServletContextHandler context) {
+    private static void addFilters(ApplicationContext applicationContext, ServletContextHandler context) {
 
-        context.addFilter(new FilterHolder(new UserSecurityFilter(securityService)),
+        context.addFilter(new FilterHolder(applicationContext.getBean(UserSecurityFilter.class)),
                 "/product/*", EnumSet.of(DispatcherType.REQUEST));
-        context.addFilter(new FilterHolder(new AdminSecurityFilter(securityService)),
+        context.addFilter(new FilterHolder(applicationContext.getBean(AdminSecurityFilter.class)),
                 "/admin/*", EnumSet.of(DispatcherType.REQUEST));
     }
 }

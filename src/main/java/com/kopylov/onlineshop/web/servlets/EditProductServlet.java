@@ -1,7 +1,7 @@
 package com.kopylov.onlineshop.web.servlets;
 
-import com.kopylov.onlineshop.back.entity.ProductDto;
-import com.kopylov.onlineshop.back.service.ProductService;
+import com.kopylov.onlineshop.entity.ProductDto;
+import com.kopylov.onlineshop.service.ProductService;
 import com.kopylov.onlineshop.web.util.PageGenerator;
 import com.kopylov.onlineshop.web.util.WebUtil;
 import jakarta.servlet.http.HttpServlet;
@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.util.HashMap;

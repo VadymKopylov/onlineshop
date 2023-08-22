@@ -1,7 +1,7 @@
 package com.kopylov.onlineshop.web.servlets;
 
-import com.kopylov.onlineshop.back.entity.ProductDto;
-import com.kopylov.onlineshop.back.service.CartService;
+import com.kopylov.onlineshop.entity.ProductDto;
+import com.kopylov.onlineshop.service.CartService;
 import com.kopylov.onlineshop.web.util.DefaultSession;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

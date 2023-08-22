@@ -1,9 +1,8 @@
-package com.kopylov.onlineshop.back.service;
+package com.kopylov.onlineshop.service;
 
-import com.kopylov.onlineshop.back.entity.ProductDto;
+import com.kopylov.onlineshop.entity.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 

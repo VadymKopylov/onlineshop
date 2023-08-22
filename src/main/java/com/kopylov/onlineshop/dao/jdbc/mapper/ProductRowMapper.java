@@ -1,6 +1,6 @@
 package com.kopylov.onlineshop.dao.jdbc.mapper;
 
-import com.kopylov.onlineshop.back.entity.Product;
+import com.kopylov.onlineshop.entity.Product;
 import org.apache.commons.text.StringEscapeUtils;
 
 import java.sql.ResultSet;

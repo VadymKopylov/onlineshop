@@ -1,9 +1,9 @@
-package com.kopylov.onlineshop.back.service;
+package com.kopylov.onlineshop.service;
 
-import com.kopylov.onlineshop.back.entity.Credentials;
-import com.kopylov.onlineshop.back.entity.ProductDto;
-import com.kopylov.onlineshop.back.entity.User;
-import com.kopylov.onlineshop.back.entity.UserRole;
+import com.kopylov.onlineshop.entity.Credentials;
+import com.kopylov.onlineshop.entity.ProductDto;
+import com.kopylov.onlineshop.entity.User;
+import com.kopylov.onlineshop.entity.UserRole;
 import com.kopylov.onlineshop.web.util.DefaultSession;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -110,9 +110,5 @@ public class SecurityService {
     //Create for Test only
     public Map<String, DefaultSession> getSessionsMap() {
         return sessionsMap;
-    }
-
-    public void setSessionTimeToLive(long sessionTimeToLive) {
-        this.sessionTimeToLive = sessionTimeToLive;
     }
 }

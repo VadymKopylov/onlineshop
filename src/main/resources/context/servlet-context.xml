@@ -9,7 +9,7 @@
         <property name="cartService" ref="cartService"/>
     </bean>
 
-    <bean id="adminProductEditServlet" class="com.kopylov.onlineshop.web.servlets.AdminProductEditServlet">
+    <bean id="adminProductEditServlet" class="com.kopylov.onlineshop.web.servlets.AdminProductServlet">
         <property name="productService" ref="productService"/>
     </bean>
 

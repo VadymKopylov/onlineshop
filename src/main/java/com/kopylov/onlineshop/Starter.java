@@ -4,13 +4,11 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.kopylov.ioc.context.ApplicationContext;
 import com.kopylov.ioc.context.ClassPathApplicationContext;
-import com.kopylov.onlineshop.back.service.SecurityService;
-import com.kopylov.onlineshop.back.util.PropertiesReader;
+import com.kopylov.onlineshop.service.ProductService;
 import com.kopylov.onlineshop.web.security.AdminSecurityFilter;
 import com.kopylov.onlineshop.web.security.UserSecurityFilter;
 import com.kopylov.onlineshop.web.servlets.*;
 import jakarta.servlet.DispatcherType;
-import jakarta.servlet.http.HttpServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -18,22 +16,16 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.slf4j.LoggerFactory;
 
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Starter {
 
     private static final int SERVER_PORT = 8081;
-    private static final String PROPERTIES = "application.properties";
-    private static final String SESSION_TIME_KEY = "sessionTimeToLive";
 
     public static void main(String[] args) throws Exception {
-        PropertiesReader propertiesReader = new PropertiesReader(PROPERTIES);
         ApplicationContext applicationContext = new ClassPathApplicationContext("/context/root-context.xml");
+        ProductService productService = applicationContext.getBean(ProductService.class);
+        productService.initializeCache();
 
-        SecurityService securityService = (SecurityService) applicationContext.getBean("securityService");
-        long sessionTimeToLive = propertiesReader.getProperties(SESSION_TIME_KEY);
-        securityService.setSessionTimeToLive(sessionTimeToLive);
         Server server = new Server(SERVER_PORT);
         server.setHandler(createContextServletHandler(applicationContext));
 
@@ -53,7 +45,7 @@ public class Starter {
 
     private static void addServlets(ApplicationContext applicationContext, ServletContextHandler context) {
         context.addServlet(new ServletHolder(applicationContext.getBean(AllRequestsServlet.class)), "");
-        context.addServlet(new ServletHolder(applicationContext.getBean(AdminProductEditServlet.class)), "/admin");
+        context.addServlet(new ServletHolder(applicationContext.getBean(AdminProductServlet.class)), "/admin");
         context.addServlet(new ServletHolder(applicationContext.getBean(AddProductServlet.class)), "/admin/product/add");
         context.addServlet(new ServletHolder(applicationContext.getBean(EditProductServlet.class)), "/admin/product/edit");
         context.addServlet(new ServletHolder(applicationContext.getBean(DeleteProductServlet.class)), "/admin/product/delete");

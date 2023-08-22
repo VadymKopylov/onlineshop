@@ -1,9 +1,8 @@
 package com.kopylov.onlineshop.dao.jdbc;
 
-import com.kopylov.onlineshop.back.entity.User;
+import com.kopylov.onlineshop.entity.User;
 import com.kopylov.onlineshop.dao.jdbc.mapper.UserRowMapper;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.sql.DataSource;
@@ -23,9 +22,6 @@ public class JdbcUserDao implements UserDao {
             """;
     private static final String SELECT_USER_SQL = """
             SELECT role_name, email, password, salt FROM users WHERE email = ?;
-            """;
-    private static final String SELECT_USER_EXIST_SQL = """
-            SELECT COUNT(*) FROM users WHERE email = ?;
             """;
 
     @Override
@@ -57,24 +53,5 @@ public class JdbcUserDao implements UserDao {
         } catch (SQLException e) {
             throw new RuntimeException("Exception with select User by email", e);
         }
-    }
-
-    public boolean isExist(String email) {
-        boolean userExists = false;
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_USER_EXIST_SQL)) {
-            statement.setString(1, email);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    int count = resultSet.getInt(1);
-                    if (count > 0) {
-                        userExists = true;
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Exception with select User by email", e);
-        }
-        return userExists;
     }
 }

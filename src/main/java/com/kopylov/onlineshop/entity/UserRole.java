@@ -1,4 +1,4 @@
-package com.kopylov.onlineshop.back.entity;
+package com.kopylov.onlineshop.entity;
 
 public enum UserRole {
     ADMIN,

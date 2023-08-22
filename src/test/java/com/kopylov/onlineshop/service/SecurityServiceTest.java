@@ -1,10 +1,8 @@
 package com.kopylov.onlineshop.service;
 
-import com.kopylov.onlineshop.back.entity.Credentials;
-import com.kopylov.onlineshop.back.entity.User;
-import com.kopylov.onlineshop.back.entity.UserRole;
-import com.kopylov.onlineshop.back.service.SecurityService;
-import com.kopylov.onlineshop.back.service.UserService;
+import com.kopylov.onlineshop.entity.Credentials;
+import com.kopylov.onlineshop.entity.User;
+import com.kopylov.onlineshop.entity.UserRole;
 import com.kopylov.onlineshop.web.util.DefaultSession;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.Test;

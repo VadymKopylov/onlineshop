@@ -1,11 +1,10 @@
 package com.kopylov.onlineshop.dao.jdbc;
 
-import com.kopylov.onlineshop.back.entity.Product;
+import com.kopylov.onlineshop.entity.Product;
 import com.kopylov.onlineshop.dao.jdbc.mapper.ProductRowMapper;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.sql.DataSource;
 import java.sql.*;

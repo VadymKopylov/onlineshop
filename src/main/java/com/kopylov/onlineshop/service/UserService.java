@@ -1,6 +1,6 @@
-package com.kopylov.onlineshop.back.service;
+package com.kopylov.onlineshop.service;
 
-import com.kopylov.onlineshop.back.entity.User;
+import com.kopylov.onlineshop.entity.User;
 import com.kopylov.onlineshop.dao.jdbc.UserDao;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -10,10 +10,6 @@ import lombok.NoArgsConstructor;
 public class UserService {
 
     private  UserDao userDao;
-
-    public boolean isExist(String email) {
-        return userDao.isExist(email);
-    }
 
     public void save(User user) {
         userDao.add(user);

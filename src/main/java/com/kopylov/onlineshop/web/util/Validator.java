@@ -7,11 +7,11 @@ public class Validator {
 
     public static void validateProductDetails(String productName, String price) {
         if (StringUtils.isBlank(productName)) {
-            throw new IllegalArgumentException("Invalid product details: productName");
+            throw new IllegalArgumentException("Invalid product productName: "+ productName);
         } else if (!NumberUtils.isParsable(price)) {
-            throw new IllegalArgumentException("Invalid product details: price");
+            throw new IllegalArgumentException("Invalid product price: "+ price);
         } else if (Double.parseDouble(price) <= 0) {
-            throw new IllegalArgumentException("Invalid product details: price cannot be less than or equal to 0");
+            throw new IllegalArgumentException("Invalid product details: price cannot be less than or equal to 0; price: " + price);
         }
     }
 
@@ -19,11 +19,11 @@ public class Validator {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException("Invalid product details: id doesn't exist");
         } else if (StringUtils.isBlank(productName)) {
-            throw new IllegalArgumentException("Invalid product details: productName");
+            throw new IllegalArgumentException("Invalid product productName: "+ productName);
         } else if (!NumberUtils.isParsable(price)) {
-            throw new IllegalArgumentException("Invalid product details: price");
+            throw new IllegalArgumentException("Invalid product price: "+ price);
         } else if (Double.parseDouble(price) <= 0) {
-            throw new IllegalArgumentException("Invalid product details: price cannot be less than or equal to 0");
+            throw new IllegalArgumentException("Invalid product details: price cannot be less than or equal to 0; price: "+ price);
         }
     }
 

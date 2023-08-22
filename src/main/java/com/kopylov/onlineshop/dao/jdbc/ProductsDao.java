@@ -1,6 +1,6 @@
 package com.kopylov.onlineshop.dao.jdbc;
 
-import com.kopylov.onlineshop.back.entity.Product;
+import com.kopylov.onlineshop.entity.Product;
 
 import java.util.List;
 

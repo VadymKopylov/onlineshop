@@ -1,7 +1,7 @@
-package com.kopylov.onlineshop.back.service;
+package com.kopylov.onlineshop.service;
 
-import com.kopylov.onlineshop.back.entity.Product;
-import com.kopylov.onlineshop.back.entity.ProductDto;
+import com.kopylov.onlineshop.entity.Product;
+import com.kopylov.onlineshop.entity.ProductDto;
 import com.kopylov.onlineshop.dao.jdbc.ProductsDao;
 import lombok.*;
 

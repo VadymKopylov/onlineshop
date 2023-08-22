@@ -1,8 +1,8 @@
 package com.kopylov.onlineshop.dao.jdbc.mapper;
 
-import com.kopylov.onlineshop.back.entity.Credentials;
-import com.kopylov.onlineshop.back.entity.User;
-import com.kopylov.onlineshop.back.entity.UserRole;
+import com.kopylov.onlineshop.entity.Credentials;
+import com.kopylov.onlineshop.entity.User;
+import com.kopylov.onlineshop.entity.UserRole;
 import org.apache.commons.text.StringEscapeUtils;
 
 import java.sql.ResultSet;

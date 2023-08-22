@@ -1,6 +1,6 @@
 package com.kopylov.onlineshop.web.servlets;
 
-import com.kopylov.onlineshop.back.entity.ProductDto;
+import com.kopylov.onlineshop.entity.ProductDto;
 import com.kopylov.onlineshop.web.util.DefaultSession;
 import com.kopylov.onlineshop.web.util.PageGenerator;
 import jakarta.servlet.http.HttpServlet;

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans>
 
-    <bean id="adminSecurityFilter" class="com.kopylov.onlineshop.web.security.AdminSecurityFilter">
-        <property name="productsDao" ref="productsDao"/>
-    </bean>
+    <bean id="adminSecurityFilter" class="com.kopylov.onlineshop.web.security.AdminSecurityFilter"/>
 
+    <bean id="userSecurityFilter" class="com.kopylov.onlineshop.web.security.UserSecurityFilter"/>
+
+    <bean id="securityFilter" class="com.kopylov.onlineshop.web.security.SecurityFilter">
+        <property name="securityService" ref="securityService"/>
+    </bean>
 
 </beans>

@@ -4,5 +4,6 @@
     <import resource="dao-context.xml"/>
     <import resource="service-context.xml"/>
     <import resource="servlet-context.xml"/>
+    <import resource="filter-context.xml"/>
 
 </beans>

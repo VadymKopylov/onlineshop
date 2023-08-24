@@ -58,7 +58,6 @@ public class Starter {
     }
 
     private static void addFilters(ApplicationContext applicationContext, ServletContextHandler context) {
-
         context.addFilter(new FilterHolder(applicationContext.getBean(UserSecurityFilter.class)),
                 "/product/*", EnumSet.of(DispatcherType.REQUEST));
         context.addFilter(new FilterHolder(applicationContext.getBean(AdminSecurityFilter.class)),

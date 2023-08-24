@@ -4,7 +4,7 @@
 
     <groupId>com.kopylov</groupId>
     <artifactId>onlineshop</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 
     <properties>
         <jetty-maven-plugin.version>11.0.15</jetty-maven-plugin.version>
